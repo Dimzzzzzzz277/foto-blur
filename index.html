@@ -13,9 +13,6 @@
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- MediaPipe Tasks-Vision CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.8/vision_bundle.js" crossorigin="anonymous"></script>
-
     <style>
         :root {
             --bg-color: #05070A;
@@ -1330,7 +1327,10 @@
         async function initMediaPipe() {
             addLog("Mengunduh modul AI MediaPipe (WASM)...", "info");
             try {
-                const { FilesetResolver, HandLandmarker } = tasksVision;
+                // Dynamically import the vision bundle as an ES Module
+                const visionModule = await import("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.8/vision_bundle.js");
+                const { FilesetResolver, HandLandmarker } = visionModule;
+                
                 const vision = await FilesetResolver.forVisionTasks(
                     "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.8/wasm"
                 );
