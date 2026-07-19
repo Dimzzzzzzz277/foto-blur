@@ -1129,7 +1129,7 @@
     </footer>
 
     <!-- Audio & UI Interaction Logic -->
-    <script>
+    <script type="module">
         // Setup Web Audio using relative paths (compatible with GitHub Pages)
         const audioTracks = {
             vsign: new Audio('FOTO KITA BLUR - SAL PRIADI (mp3cut.net).mp3'),
@@ -1329,7 +1329,7 @@
             addLog("Mengunduh modul AI MediaPipe (WASM)...", "info");
             try {
                 // Dynamically import the vision bundle as an ES Module
-                const visionModule = await import("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.8/vision_bundle.js");
+                const visionModule = await import("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.8/vision_bundle.mjs");
                 const { FilesetResolver, HandLandmarker } = visionModule;
                 
                 const vision = await FilesetResolver.forVisionTasks(
