@@ -1,0 +1,19 @@
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# Python cache & compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# MediaPipe AI Models (Downloaded at runtime in both desktop/web, no need to upload)
+*.task
+
+# OS generated files
+.DS_Store
+Thumbs.db
