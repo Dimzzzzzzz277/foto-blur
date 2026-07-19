@@ -1,2003 +1,2484 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Foto Kita Blur - Hand Gesture Hub</title>
-    
+
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+
     <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
 
     <style>
-        :root {
-            --bg-color: #05070A;
-            --card-bg: rgba(10, 14, 23, 0.45);
-            --card-border: rgba(255, 255, 255, 0.06);
-            --text-main: #F3F4F6;
-            --text-muted: #8F9CAE;
-            
-            /* Dynamic Accent Color Default */
-            --accent-color: #3B82F6;
-            --accent-glow: rgba(59, 130, 246, 0.35);
-            
-            /* Mode Specifics */
-            --normal-color: #3B82F6;
-            --normal-glow: rgba(59, 130, 246, 0.25);
-            
-            --vsign-color: #F59E0B;
-            --vsign-glow: rgba(245, 158, 11, 0.3);
-            
-            --thumbs-color: #10B981;
-            --thumbs-glow: rgba(16, 185, 129, 0.3);
-            
-            --fist-color: #EF4444;
-            --fist-glow: rgba(239, 68, 68, 0.3);
-        }
+      :root {
+        --bg-color: #05070a;
+        --card-bg: rgba(10, 14, 23, 0.45);
+        --card-border: rgba(255, 255, 255, 0.06);
+        --text-main: #f3f4f6;
+        --text-muted: #8f9cae;
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        /* Dynamic Accent Color Default */
+        --accent-color: #3b82f6;
+        --accent-glow: rgba(59, 130, 246, 0.35);
 
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
-            position: relative;
-        }
+        /* Mode Specifics */
+        --normal-color: #3b82f6;
+        --normal-glow: rgba(59, 130, 246, 0.25);
 
-        /* Ambient Dynamic Background Light */
-        .ambient-light {
-            position: absolute;
-            width: 700px;
-            height: 700px;
-            border-radius: 50%;
-            background: radial-gradient(circle, var(--accent-glow) 0%, rgba(5, 7, 10, 0) 70%);
-            top: -250px;
-            left: 50%;
-            transform: translateX(-50%);
-            filter: blur(100px);
-            z-index: 0;
-            transition: background 0.8s ease, filter 0.8s ease;
-            pointer-events: none;
-        }
+        --vsign-color: #f59e0b;
+        --vsign-glow: rgba(245, 158, 11, 0.3);
 
-        .ambient-light-bottom {
-            position: absolute;
-            width: 500px;
-            height: 500px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.05) 0%, rgba(5, 7, 10, 0) 70%);
-            bottom: -150px;
-            right: -150px;
-            filter: blur(80px);
-            z-index: 0;
-            pointer-events: none;
-        }
+        --thumbs-color: #10b981;
+        --thumbs-glow: rgba(16, 185, 129, 0.3);
 
-        .app-container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2.5rem 1.5rem;
-            z-index: 10;
-            position: relative;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
+        --fist-color: #ef4444;
+        --fist-glow: rgba(239, 68, 68, 0.3);
+      }
 
-        header {
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-        }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-        .logo {
-            font-family: 'Outfit', sans-serif;
-            font-weight: 800;
-            font-size: 2.8rem;
-            letter-spacing: -0.05em;
-            background: linear-gradient(to right, #ffffff 40%, var(--accent-color) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: inline-block;
-            transition: background 0.8s ease;
-        }
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow-x: hidden;
+        position: relative;
+      }
 
-        .logo span {
-            font-weight: 300;
-        }
+      /* Ambient Dynamic Background Light */
+      .ambient-light {
+        position: absolute;
+        width: 700px;
+        height: 700px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          var(--accent-glow) 0%,
+          rgba(5, 7, 10, 0) 70%
+        );
+        top: -250px;
+        left: 50%;
+        transform: translateX(-50%);
+        filter: blur(100px);
+        z-index: 0;
+        transition:
+          background 0.8s ease,
+          filter 0.8s ease;
+        pointer-events: none;
+      }
 
-        header p {
-            font-size: 1rem;
-            color: var(--text-muted);
-            max-width: 600px;
-            line-height: 1.6;
-        }
+      .ambient-light-bottom {
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(59, 130, 246, 0.05) 0%,
+          rgba(5, 7, 10, 0) 70%
+        );
+        bottom: -150px;
+        right: -150px;
+        filter: blur(80px);
+        z-index: 0;
+        pointer-events: none;
+      }
 
-        .status-badge {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--card-border);
-            padding: 0.5rem 1.2rem;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            margin-top: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
+      .app-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2.5rem 1.5rem;
+        z-index: 10;
+        position: relative;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
 
-        .status-badge .dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--accent-color);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--accent-color);
-            display: inline-block;
-            transition: background-color 0.5s ease, box-shadow 0.5s ease;
-        }
-        
-        .status-badge .dot.pulsing {
-            animation: dot-pulse 1s infinite alternate;
-        }
-        
-        @keyframes dot-pulse {
-            0% { opacity: 0.4; transform: scale(0.9); }
-            100% { opacity: 1; transform: scale(1.1); box-shadow: 0 0 15px var(--accent-color); }
-        }
+      header {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+      }
 
-        /* Grid Layout */
+      .logo {
+        font-family: "Outfit", sans-serif;
+        font-weight: 800;
+        font-size: 2.8rem;
+        letter-spacing: -0.05em;
+        background: linear-gradient(
+          to right,
+          #ffffff 40%,
+          var(--accent-color) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+        transition: background 0.8s ease;
+      }
+
+      .logo span {
+        font-weight: 300;
+      }
+
+      header p {
+        font-size: 1rem;
+        color: var(--text-muted);
+        max-width: 600px;
+        line-height: 1.6;
+      }
+
+      .status-badge {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--card-border);
+        padding: 0.5rem 1.2rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-top: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .status-badge .dot {
+        width: 8px;
+        height: 8px;
+        background-color: var(--accent-color);
+        border-radius: 50%;
+        box-shadow: 0 0 10px var(--accent-color);
+        display: inline-block;
+        transition:
+          background-color 0.5s ease,
+          box-shadow 0.5s ease;
+      }
+
+      .status-badge .dot.pulsing {
+        animation: dot-pulse 1s infinite alternate;
+      }
+
+      @keyframes dot-pulse {
+        0% {
+          opacity: 0.4;
+          transform: scale(0.9);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1.1);
+          box-shadow: 0 0 15px var(--accent-color);
+        }
+      }
+
+      /* Grid Layout */
+      .app-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 2rem;
+      }
+
+      @media (max-width: 968px) {
         .app-grid {
-            display: grid;
-            grid-template-columns: 1.4fr 1fr;
-            gap: 2rem;
-        }
-
-        @media (max-width: 968px) {
-            .app-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Card Elements */
-        .glass-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 24px;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 1.8rem;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.05);
-            transition: border-color 0.5s ease, box-shadow 0.5s ease;
-        }
-        
-        .glass-card:hover {
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-
-        /* Stream Display Column */
-        .stream-column {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        /* Premium Device / Video Frame */
-        .video-wrapper {
-            position: relative;
-            width: 100%;
-            border-radius: 24px;
-            overflow: hidden;
-            background-color: #030509;
-            aspect-ratio: 4/3;
-            box-shadow: 0 0 0 1px var(--card-border), 0 20px 50px -15px rgba(0, 0, 0, 0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.1s ease;
-        }
-
-        /* Ambient Dynamic Background Aura behind/inside video wrapper */
-        .camera-aura {
-            position: absolute;
-            inset: -20px;
-            background: radial-gradient(circle, var(--accent-glow) 0%, rgba(5, 7, 10, 0) 75%);
-            z-index: 1;
-            filter: blur(15px);
-            opacity: 0;
-            transition: background 0.8s ease, opacity 0.8s ease;
-            pointer-events: none;
-        }
-        .camera-aura.active {
-            opacity: 0.6;
-            animation: aura-breathe 4s infinite ease-in-out;
-        }
-        
-        @keyframes aura-breathe {
-            0%, 100% { transform: scale(0.97); opacity: 0.45; }
-            50% { transform: scale(1.03); opacity: 0.75; }
-        }
-
-        .video-wrapper::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 24px;
-            padding: 1.5px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 100%);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
-            transition: background 0.5s ease;
-            z-index: 12;
-        }
-
-        /* Dynamic shadow on the video wrapper based on mode */
-        .video-wrapper.glow-active {
-            box-shadow: 0 0 45px -5px var(--accent-glow), 0 0 0 2px var(--accent-color), 0 25px 60px -15px rgba(0, 0, 0, 0.8);
-        }
-
-        /* Canvas for rendering processed video */
-        .video-feed {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: none; /* hidden until started */
-            z-index: 2;
-            transition: filter 0.5s ease;
-        }
-
-        /* HUD - Futuristic Cyberpunk Overlay Elements */
-        .hud-element {
-            position: absolute;
-            z-index: 8;
-            pointer-events: none;
-            opacity: 0;
-            transform: scale(0.96);
-            transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s ease;
-        }
-        
-        .hud-element.visible {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        /* Brackets on Corners */
-        .hud-bracket {
-            width: 26px;
-            height: 26px;
-            border-color: var(--accent-color);
-        }
-        
-        .hud-bracket.top-left {
-            top: 20px;
-            left: 20px;
-            border-top: 3px solid var(--accent-color);
-            border-left: 3px solid var(--accent-color);
-            border-top-left-radius: 8px;
-        }
-        .hud-bracket.top-right {
-            top: 20px;
-            right: 20px;
-            border-top: 3px solid var(--accent-color);
-            border-right: 3px solid var(--accent-color);
-            border-top-right-radius: 8px;
-        }
-        .hud-bracket.bottom-left {
-            bottom: 20px;
-            left: 20px;
-            border-bottom: 3px solid var(--accent-color);
-            border-left: 3px solid var(--accent-color);
-            border-bottom-left-radius: 8px;
-        }
-        .hud-bracket.bottom-right {
-            bottom: 20px;
-            right: 20px;
-            border-bottom: 3px solid var(--accent-color);
-            border-right: 3px solid var(--accent-color);
-            border-bottom-right-radius: 8px;
-        }
-        
-        .video-wrapper.glow-active .hud-bracket {
-            animation: hud-bracket-pulse 2s infinite alternate ease-in-out;
-        }
-        
-        @keyframes hud-bracket-pulse {
-            0% { transform: scale(1); filter: brightness(0.9); }
-            100% { transform: scale(1.02); filter: brightness(1.15); }
-        }
-
-        /* HUD Header */
-        .hud-header {
-            top: 20px;
-            left: 55px;
-            right: 55px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.7);
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-            letter-spacing: 0.05em;
-        }
-
-        .hud-rec-group {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .hud-rec-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #EF4444;
-            border-radius: 50%;
-            box-shadow: 0 0 8px #EF4444;
-            animation: rec-blink 1s infinite alternate;
-        }
-        
-        @keyframes rec-blink {
-            0% { opacity: 0.3; }
-            100% { opacity: 1; }
-        }
-
-        .hud-rec-text {
-            font-weight: bold;
-            color: #FFFFFF;
-        }
-
-        /* HUD Footer */
-        .hud-footer {
-            bottom: 20px;
-            left: 55px;
-            right: 55px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.7);
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-        }
-        
-        .hud-battery {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        /* Center Crosshair reticle */
-        .hud-crosshair {
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.8);
-            width: 50px;
-            height: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 50%;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 6;
-        }
-        
-        .hud-crosshair::before, .hud-crosshair::after {
-            content: '';
-            position: absolute;
-            background-color: var(--accent-color);
-            transition: background-color 0.5s ease;
-        }
-        /* horizontal line */
-        .hud-crosshair::before {
-            top: 50%;
-            left: -8px;
-            width: 66px;
-            height: 1px;
-            transform: translateY(-50%);
-        }
-        /* vertical line */
-        .hud-crosshair::after {
-            left: 50%;
-            top: -8px;
-            width: 1px;
-            height: 66px;
-            transform: translateX(-50%);
-        }
-        
-        .hud-crosshair.visible {
-            opacity: 0.35;
-            transform: translate(-50%, -50%) scale(1);
-        }
-        
-        /* Interactive Reticle Morphs */
-        .hud-crosshair.thumbs-active {
-            transform: translate(-50%, -50%) rotate(45deg);
-            border: 1px dashed var(--thumbs-color);
-            opacity: 0.6;
-        }
-        
-        .hud-crosshair.fist-active {
-            transform: translate(-50%, -50%) scale(1.25);
-            border: 2px solid var(--fist-color);
-            border-radius: 8px; /* Box reticle */
-            opacity: 0.8;
-        }
-
-        .hud-crosshair.cinematic {
-            opacity: 0 !important;
-            transform: translate(-50%, -50%) scale(0.6);
-        }
-
-        /* Scanlines Overlay */
-        .scanlines {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(
-                rgba(18, 16, 16, 0) 50%, 
-                rgba(0, 0, 0, 0.15) 50%
-            ), 
-            linear-gradient(
-                90deg, 
-                rgba(255, 0, 0, 0.02), 
-                rgba(0, 255, 0, 0.01), 
-                rgba(0, 0, 255, 0.02)
-            );
-            background-size: 100% 4px, 6px 100%;
-            z-index: 5;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-        .scanlines.active {
-            opacity: 0.85;
-        }
-
-        /* Film Grain (for V sign mode) */
-        .film-grain {
-            position: absolute;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            opacity: 0;
-            z-index: 6;
-            pointer-events: none;
-            mix-blend-mode: overlay;
-            transition: opacity 0.5s ease;
-        }
-        .film-grain.active {
-            opacity: 0.12;
-            animation: grain-anim 0.3s infinite steps(6);
-        }
-        
-        @keyframes grain-anim {
-            0%, 100% { transform: translate(0, 0); }
-            10% { transform: translate(-2%, -5%); }
-            30% { transform: translate(3%, -8%); }
-            50% { transform: translate(-4%, 3%); }
-            70% { transform: translate(4%, -1%); }
-            90% { transform: translate(-1%, 6%); }
-        }
-
-        /* Cinematic Letterbox Bars (V Sign Mode) */
-        .cinematic-bar {
-            position: absolute;
-            left: 0;
-            width: 100%;
-            height: 0;
-            background-color: #000000;
-            z-index: 9;
-            transition: height 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-            pointer-events: none;
-        }
-        
-        .cinematic-bar.top-bar {
-            top: 0;
-        }
-        .cinematic-bar.bottom-bar {
-            bottom: 0;
-        }
-        
-        .cinematic-bar.active {
-            height: 12.5%;
-        }
-
-        /* Glitch vignette overlay (Fist Mode) */
-        .vignette-overlay {
-            position: absolute;
-            inset: 0;
-            box-shadow: inset 0 0 80px rgba(239, 68, 68, 0.6);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            pointer-events: none;
-            z-index: 4;
-            mix-blend-mode: color-burn;
-        }
-
-        .vignette-overlay.active {
-            opacity: 1;
-            animation: red-pulse 1.5s infinite alternate ease-in-out;
-        }
-        
-        @keyframes red-pulse {
-            0% { box-shadow: inset 0 0 50px rgba(239, 68, 68, 0.4); }
-            100% { box-shadow: inset 0 0 100px rgba(239, 68, 68, 0.7); }
-        }
-
-        /* Glitch overlay line flashes (Fist Mode) */
-        .glitch-overlay {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 5;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        .glitch-overlay.active {
-            opacity: 0.2;
-            animation: glitch-flashes 0.2s infinite steps(2);
-        }
-        
-        @keyframes glitch-flashes {
-            0% { background: rgba(239, 68, 68, 0.1); }
-            50% { background: rgba(255, 255, 255, 0.05); }
-            100% { background: rgba(0, 0, 0, 0.1); }
-        }
-
-        /* Screen Shake effect for FIST */
-        @keyframes shake {
-            0%, 100% { transform: translate(0, 0) scale(1.02); }
-            10% { transform: translate(-4px, -4px) scale(1.02); }
-            20% { transform: translate(4px, -2px) scale(1.02); }
-            30% { transform: translate(-2px, 4px) scale(1.02); }
-            40% { transform: translate(2px, -4px) scale(1.02); }
-            50% { transform: translate(-4px, 2px) scale(1.02); }
-            60% { transform: translate(4px, 4px) scale(1.02); }
-            70% { transform: translate(-2px, -2px) scale(1.02); }
-            80% { transform: translate(2px, 4px) scale(1.02); }
-            90% { transform: translate(-4px, -2px) scale(1.02); }
-        }
-
-        .shake-effect {
-            animation: shake 0.2s infinite;
-        }
-
-        /* Floating typewriter overlay for V sign */
-        .typewriter-overlay {
-            position: absolute;
-            bottom: 16%;
-            left: 5%;
-            right: 5%;
-            text-align: center;
-            font-family: 'Outfit', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: #FFFFFF;
-            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.9), 0 0 20px rgba(245, 158, 11, 0.4);
-            pointer-events: none;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            z-index: 10;
-            letter-spacing: 0.02em;
-        }
-
-        .typewriter-overlay.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Camera Placeholder Screen */
-        .placeholder-screen {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 1.5rem;
-            color: var(--text-muted);
-            text-align: center;
-            padding: 2rem;
-            background: linear-gradient(135deg, rgba(10, 14, 23, 0.95) 0%, rgba(5, 7, 10, 0.98) 100%);
-            z-index: 11;
-            transition: opacity 0.5s ease;
-        }
-
-        .placeholder-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: rgba(59, 130, 246, 0.1);
-            color: var(--accent-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2.2rem;
-            box-shadow: 0 0 30px rgba(59, 130, 246, 0.15);
-            animation: pulse-glow 2s infinite ease-in-out;
-            transition: color 0.5s ease, background 0.5s ease, box-shadow 0.5s ease;
-        }
-
-        @keyframes pulse-glow {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
-            }
-            50% {
-                transform: scale(1.05);
-                box-shadow: 0 0 35px rgba(59, 130, 246, 0.3);
-            }
-        }
-
-        .btn-start-stream {
-            background: linear-gradient(135deg, var(--accent-color) 0%, rgba(59, 130, 246, 0.85) 100%);
-            color: white;
-            border: none;
-            padding: 0.9rem 2.2rem;
-            font-size: 1rem;
-            font-weight: 700;
-            border-radius: 14px;
-            cursor: pointer;
-            box-shadow: 0 4px 18px var(--accent-glow);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .btn-start-stream:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 25px var(--accent-glow);
-            filter: brightness(1.15);
-        }
-
-        .btn-start-stream:active {
-            transform: translateY(1px);
-        }
-
-        /* Control Panel Column */
-        .control-column {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .panel-title {
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin-bottom: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding-bottom: 0.6rem;
-            color: var(--text-main);
-        }
-
-        .panel-title i {
-            color: var(--accent-color);
-            transition: color 0.5s ease;
-        }
-
-        /* Gesture Display Card */
-        .gesture-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            text-align: center;
-            min-height: 170px;
-            background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.02) 0%, transparent 80%);
-            border-radius: 20px;
-            border: 1px solid var(--card-border);
-            padding: 1.5rem;
-            transition: border-color 0.5s ease, box-shadow 0.5s ease;
-        }
-        
-        .gesture-card.glow-active {
-            box-shadow: inset 0 0 20px var(--accent-glow);
-            border-color: var(--accent-color);
-        }
-
-        .gesture-badge {
-            padding: 0.5rem 1.6rem;
-            border-radius: 100px;
-            font-weight: 800;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            background-color: rgba(59, 130, 246, 0.1);
-            color: var(--accent-color);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            transition: all 0.5s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .gesture-title {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.9rem;
-            font-weight: 700;
-            line-height: 1.2;
-            transition: color 0.5s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-        }
-
-        .gesture-desc {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            max-width: 265px;
-            line-height: 1.5;
-        }
-
-        /* Interactive Controls */
-        .controls-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-        }
-
-        .control-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.01);
-            padding: 0.9rem 1.3rem;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.02);
-            transition: background 0.3s ease;
-        }
-        
-        .control-item:hover {
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .control-label {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-        }
-
-        .control-label i {
-            color: var(--text-muted);
-            width: 18px;
-        }
-
-        /* Toggle Switches */
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 44px;
-            height: 24px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider-switch {
-            position: absolute;
-            cursor: pointer;
-            inset: 0;
-            background-color: rgba(255, 255, 255, 0.08);
-            transition: .3s;
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-        }
-
-        .slider-switch:before {
-            position: absolute;
-            content: "";
-            height: 16px;
-            width: 16px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: .3s;
-            border-radius: 50%;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        input:checked + .slider-switch {
-            background-color: var(--accent-color);
-            box-shadow: 0 0 10px var(--accent-glow);
-        }
-
-        input:checked + .slider-switch:before {
-            transform: translateX(20px);
-        }
-
-        /* Volume Slider */
-        .volume-container {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            width: 140px;
-        }
-
-        .volume-slider {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 6px;
-            border-radius: 5px;
-            background: rgba(255, 255, 255, 0.08);
-            outline: none;
-            transition: background 0.3s;
-        }
-
-        .volume-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: var(--accent-color);
-            cursor: pointer;
-            box-shadow: 0 0 8px var(--accent-glow);
-            transition: background 0.3s, transform 0.1s;
-        }
-
-        .volume-slider::-webkit-slider-thumb:hover {
-            transform: scale(1.25);
-        }
-
-        /* Console/Logs Panel */
-        .console-card {
-            background-color: rgba(4, 6, 10, 0.85);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 1.2rem;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.8rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
-        }
-
-        .console-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-            padding-bottom: 0.5rem;
-            color: var(--text-muted);
-            font-size: 0.75rem;
-        }
-
-        .console-logs {
-            height: 140px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 0.35rem;
-            scroll-behavior: smooth;
-        }
-
-        /* Custom Scrollbar for console */
-        .console-logs::-webkit-scrollbar {
-            width: 4px;
-        }
-        .console-logs::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .console-logs::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 10px;
-        }
-        .console-logs::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .log-entry {
-            display: flex;
-            gap: 0.6rem;
-            line-height: 1.4;
-        }
-
-        .log-time {
-            color: var(--text-muted);
-            flex-shrink: 0;
-        }
-
-        .log-text {
-            word-break: break-all;
-        }
-
-        .log-info { color: #3B82F6; }
-        .log-success { color: #10B981; }
-        .log-warning { color: #F59E0B; }
-        .log-danger { color: #EF4444; }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 2.5rem 0;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: auto;
-            border-top: 1px solid rgba(255, 255, 255, 0.02);
-        }
-
-        footer a {
-            color: var(--accent-color);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        footer a:hover {
-            color: white;
-            text-decoration: underline;
-        }
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Card Elements */
+      .glass-card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 24px;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        padding: 1.8rem;
+        box-shadow:
+          0 15px 35px rgba(0, 0, 0, 0.3),
+          inset 0 1px 1px rgba(255, 255, 255, 0.05);
+        transition:
+          border-color 0.5s ease,
+          box-shadow 0.5s ease;
+      }
+
+      .glass-card:hover {
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+
+      /* Stream Display Column */
+      .stream-column {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      /* Premium Device / Video Frame */
+      .video-wrapper {
+        position: relative;
+        width: 100%;
+        border-radius: 24px;
+        overflow: hidden;
+        background-color: #030509;
+        aspect-ratio: 4/3;
+        box-shadow:
+          0 0 0 1px var(--card-border),
+          0 20px 50px -15px rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition:
+          box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.1s ease;
+      }
+
+      /* Ambient Dynamic Background Aura behind/inside video wrapper */
+      .camera-aura {
+        position: absolute;
+        inset: -20px;
+        background: radial-gradient(
+          circle,
+          var(--accent-glow) 0%,
+          rgba(5, 7, 10, 0) 75%
+        );
+        z-index: 1;
+        filter: blur(15px);
+        opacity: 0;
+        transition:
+          background 0.8s ease,
+          opacity 0.8s ease;
+        pointer-events: none;
+      }
+      .camera-aura.active {
+        opacity: 0.6;
+        animation: aura-breathe 4s infinite ease-in-out;
+      }
+
+      @keyframes aura-breathe {
+        0%,
+        100% {
+          transform: scale(0.97);
+          opacity: 0.45;
+        }
+        50% {
+          transform: scale(1.03);
+          opacity: 0.75;
+        }
+      }
+
+      .video-wrapper::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 24px;
+        padding: 1.5px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.1) 0%,
+          rgba(255, 255, 255, 0.02) 100%
+        );
+        -webkit-mask:
+          linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+        transition: background 0.5s ease;
+        z-index: 12;
+      }
+
+      /* Dynamic shadow on the video wrapper based on mode */
+      .video-wrapper.glow-active {
+        box-shadow:
+          0 0 45px -5px var(--accent-glow),
+          0 0 0 2px var(--accent-color),
+          0 25px 60px -15px rgba(0, 0, 0, 0.8);
+      }
+
+      /* Canvas for rendering processed video */
+      .video-feed {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: none; /* hidden until started */
+        z-index: 2;
+        transition: filter 0.5s ease;
+      }
+
+      /* HUD - Futuristic Cyberpunk Overlay Elements */
+      .hud-element {
+        position: absolute;
+        z-index: 8;
+        pointer-events: none;
+        opacity: 0;
+        transform: scale(0.96);
+        transition:
+          opacity 0.6s ease,
+          transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+          border-color 0.5s ease;
+      }
+
+      .hud-element.visible {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      /* Brackets on Corners */
+      .hud-bracket {
+        width: 26px;
+        height: 26px;
+        border-color: var(--accent-color);
+      }
+
+      .hud-bracket.top-left {
+        top: 20px;
+        left: 20px;
+        border-top: 3px solid var(--accent-color);
+        border-left: 3px solid var(--accent-color);
+        border-top-left-radius: 8px;
+      }
+      .hud-bracket.top-right {
+        top: 20px;
+        right: 20px;
+        border-top: 3px solid var(--accent-color);
+        border-right: 3px solid var(--accent-color);
+        border-top-right-radius: 8px;
+      }
+      .hud-bracket.bottom-left {
+        bottom: 20px;
+        left: 20px;
+        border-bottom: 3px solid var(--accent-color);
+        border-left: 3px solid var(--accent-color);
+        border-bottom-left-radius: 8px;
+      }
+      .hud-bracket.bottom-right {
+        bottom: 20px;
+        right: 20px;
+        border-bottom: 3px solid var(--accent-color);
+        border-right: 3px solid var(--accent-color);
+        border-bottom-right-radius: 8px;
+      }
+
+      .video-wrapper.glow-active .hud-bracket {
+        animation: hud-bracket-pulse 2s infinite alternate ease-in-out;
+      }
+
+      @keyframes hud-bracket-pulse {
+        0% {
+          transform: scale(1);
+          filter: brightness(0.9);
+        }
+        100% {
+          transform: scale(1.02);
+          filter: brightness(1.15);
+        }
+      }
+
+      /* HUD Header */
+      .hud-header {
+        top: 20px;
+        left: 55px;
+        right: 55px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.7);
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+        letter-spacing: 0.05em;
+      }
+
+      .hud-rec-group {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+
+      .hud-rec-dot {
+        width: 8px;
+        height: 8px;
+        background-color: #ef4444;
+        border-radius: 50%;
+        box-shadow: 0 0 8px #ef4444;
+        animation: rec-blink 1s infinite alternate;
+      }
+
+      @keyframes rec-blink {
+        0% {
+          opacity: 0.3;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      .hud-rec-text {
+        font-weight: bold;
+        color: #ffffff;
+      }
+
+      /* HUD Footer */
+      .hud-footer {
+        bottom: 20px;
+        left: 55px;
+        right: 55px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.7);
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+      }
+
+      .hud-battery {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+
+      /* Center Crosshair reticle */
+      .hud-crosshair {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.8);
+        width: 50px;
+        height: 50px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 50%;
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        z-index: 6;
+      }
+
+      .hud-crosshair::before,
+      .hud-crosshair::after {
+        content: "";
+        position: absolute;
+        background-color: var(--accent-color);
+        transition: background-color 0.5s ease;
+      }
+      /* horizontal line */
+      .hud-crosshair::before {
+        top: 50%;
+        left: -8px;
+        width: 66px;
+        height: 1px;
+        transform: translateY(-50%);
+      }
+      /* vertical line */
+      .hud-crosshair::after {
+        left: 50%;
+        top: -8px;
+        width: 1px;
+        height: 66px;
+        transform: translateX(-50%);
+      }
+
+      .hud-crosshair.visible {
+        opacity: 0.35;
+        transform: translate(-50%, -50%) scale(1);
+      }
+
+      /* Interactive Reticle Morphs */
+      .hud-crosshair.thumbs-active {
+        transform: translate(-50%, -50%) rotate(45deg);
+        border: 1px dashed var(--thumbs-color);
+        opacity: 0.6;
+      }
+
+      .hud-crosshair.fist-active {
+        transform: translate(-50%, -50%) scale(1.25);
+        border: 2px solid var(--fist-color);
+        border-radius: 8px; /* Box reticle */
+        opacity: 0.8;
+      }
+
+      .hud-crosshair.cinematic {
+        opacity: 0 !important;
+        transform: translate(-50%, -50%) scale(0.6);
+      }
+
+      /* Scanlines Overlay */
+      .scanlines {
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%),
+          linear-gradient(
+            90deg,
+            rgba(255, 0, 0, 0.02),
+            rgba(0, 255, 0, 0.01),
+            rgba(0, 0, 255, 0.02)
+          );
+        background-size:
+          100% 4px,
+          6px 100%;
+        z-index: 5;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+      }
+      .scanlines.active {
+        opacity: 0.85;
+      }
+
+      /* Film Grain (for V sign mode) */
+      .film-grain {
+        position: absolute;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        opacity: 0;
+        z-index: 6;
+        pointer-events: none;
+        mix-blend-mode: overlay;
+        transition: opacity 0.5s ease;
+      }
+      .film-grain.active {
+        opacity: 0.12;
+        animation: grain-anim 0.3s infinite steps(6);
+      }
+
+      @keyframes grain-anim {
+        0%,
+        100% {
+          transform: translate(0, 0);
+        }
+        10% {
+          transform: translate(-2%, -5%);
+        }
+        30% {
+          transform: translate(3%, -8%);
+        }
+        50% {
+          transform: translate(-4%, 3%);
+        }
+        70% {
+          transform: translate(4%, -1%);
+        }
+        90% {
+          transform: translate(-1%, 6%);
+        }
+      }
+
+      /* Cinematic Letterbox Bars (V Sign Mode) */
+      .cinematic-bar {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 0;
+        background-color: #000000;
+        z-index: 9;
+        transition: height 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        pointer-events: none;
+      }
+
+      .cinematic-bar.top-bar {
+        top: 0;
+      }
+      .cinematic-bar.bottom-bar {
+        bottom: 0;
+      }
+
+      .cinematic-bar.active {
+        height: 12.5%;
+      }
+
+      /* Glitch vignette overlay (Fist Mode) */
+      .vignette-overlay {
+        position: absolute;
+        inset: 0;
+        box-shadow: inset 0 0 80px rgba(239, 68, 68, 0.6);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        pointer-events: none;
+        z-index: 4;
+        mix-blend-mode: color-burn;
+      }
+
+      .vignette-overlay.active {
+        opacity: 1;
+        animation: red-pulse 1.5s infinite alternate ease-in-out;
+      }
+
+      @keyframes red-pulse {
+        0% {
+          box-shadow: inset 0 0 50px rgba(239, 68, 68, 0.4);
+        }
+        100% {
+          box-shadow: inset 0 0 100px rgba(239, 68, 68, 0.7);
+        }
+      }
+
+      /* Glitch overlay line flashes (Fist Mode) */
+      .glitch-overlay {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 5;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      .glitch-overlay.active {
+        opacity: 0.2;
+        animation: glitch-flashes 0.2s infinite steps(2);
+      }
+
+      @keyframes glitch-flashes {
+        0% {
+          background: rgba(239, 68, 68, 0.1);
+        }
+        50% {
+          background: rgba(255, 255, 255, 0.05);
+        }
+        100% {
+          background: rgba(0, 0, 0, 0.1);
+        }
+      }
+
+      /* Screen Shake effect for FIST */
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translate(0, 0) scale(1.02);
+        }
+        10% {
+          transform: translate(-4px, -4px) scale(1.02);
+        }
+        20% {
+          transform: translate(4px, -2px) scale(1.02);
+        }
+        30% {
+          transform: translate(-2px, 4px) scale(1.02);
+        }
+        40% {
+          transform: translate(2px, -4px) scale(1.02);
+        }
+        50% {
+          transform: translate(-4px, 2px) scale(1.02);
+        }
+        60% {
+          transform: translate(4px, 4px) scale(1.02);
+        }
+        70% {
+          transform: translate(-2px, -2px) scale(1.02);
+        }
+        80% {
+          transform: translate(2px, 4px) scale(1.02);
+        }
+        90% {
+          transform: translate(-4px, -2px) scale(1.02);
+        }
+      }
+
+      .shake-effect {
+        animation: shake 0.2s infinite;
+      }
+
+      /* Floating typewriter overlay for V sign */
+      .typewriter-overlay {
+        position: absolute;
+        bottom: 16%;
+        left: 5%;
+        right: 5%;
+        text-align: center;
+        font-family: "Outfit", sans-serif;
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: #ffffff;
+        text-shadow:
+          0 4px 15px rgba(0, 0, 0, 0.9),
+          0 0 20px rgba(245, 158, 11, 0.4);
+        pointer-events: none;
+        opacity: 0;
+        transform: translateY(20px);
+        transition:
+          opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 10;
+        letter-spacing: 0.02em;
+      }
+
+      .typewriter-overlay.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Camera Placeholder Screen */
+      .placeholder-screen {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 1.5rem;
+        color: var(--text-muted);
+        text-align: center;
+        padding: 2rem;
+        background: linear-gradient(
+          135deg,
+          rgba(10, 14, 23, 0.95) 0%,
+          rgba(5, 7, 10, 0.98) 100%
+        );
+        z-index: 11;
+        transition: opacity 0.5s ease;
+      }
+
+      .placeholder-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: rgba(59, 130, 246, 0.1);
+        color: var(--accent-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2.2rem;
+        box-shadow: 0 0 30px rgba(59, 130, 246, 0.15);
+        animation: pulse-glow 2s infinite ease-in-out;
+        transition:
+          color 0.5s ease,
+          background 0.5s ease,
+          box-shadow 0.5s ease;
+      }
+
+      @keyframes pulse-glow {
+        0%,
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+        }
+        50% {
+          transform: scale(1.05);
+          box-shadow: 0 0 35px rgba(59, 130, 246, 0.3);
+        }
+      }
+
+      .btn-start-stream {
+        background: linear-gradient(
+          135deg,
+          var(--accent-color) 0%,
+          rgba(59, 130, 246, 0.85) 100%
+        );
+        color: white;
+        border: none;
+        padding: 0.9rem 2.2rem;
+        font-size: 1rem;
+        font-weight: 700;
+        border-radius: 14px;
+        cursor: pointer;
+        box-shadow: 0 4px 18px var(--accent-glow);
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+      }
+
+      .btn-start-stream:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 8px 25px var(--accent-glow);
+        filter: brightness(1.15);
+      }
+
+      .btn-start-stream:active {
+        transform: translateY(1px);
+      }
+
+      /* Control Panel Column */
+      .control-column {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .panel-title {
+        font-size: 1.15rem;
+        font-weight: 700;
+        margin-bottom: 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding-bottom: 0.6rem;
+        color: var(--text-main);
+      }
+
+      .panel-title i {
+        color: var(--accent-color);
+        transition: color 0.5s ease;
+      }
+
+      /* Gesture Display Card */
+      .gesture-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        text-align: center;
+        min-height: 170px;
+        background: radial-gradient(
+          circle at top right,
+          rgba(255, 255, 255, 0.02) 0%,
+          transparent 80%
+        );
+        border-radius: 20px;
+        border: 1px solid var(--card-border);
+        padding: 1.5rem;
+        transition:
+          border-color 0.5s ease,
+          box-shadow 0.5s ease;
+      }
+
+      .gesture-card.glow-active {
+        box-shadow: inset 0 0 20px var(--accent-glow);
+        border-color: var(--accent-color);
+      }
+
+      .gesture-badge {
+        padding: 0.5rem 1.6rem;
+        border-radius: 100px;
+        font-weight: 800;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        background-color: rgba(59, 130, 246, 0.1);
+        color: var(--accent-color);
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        transition: all 0.5s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .gesture-title {
+        font-family: "Outfit", sans-serif;
+        font-size: 1.9rem;
+        font-weight: 700;
+        line-height: 1.2;
+        transition: color 0.5s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+
+      .gesture-desc {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        max-width: 265px;
+        line-height: 1.5;
+      }
+
+      /* Interactive Controls */
+      .controls-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+      }
+
+      .control-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.01);
+        padding: 0.9rem 1.3rem;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.02);
+        transition: background 0.3s ease;
+      }
+
+      .control-item:hover {
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .control-label {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--text-main);
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+
+      .control-label i {
+        color: var(--text-muted);
+        width: 18px;
+      }
+
+      /* Toggle Switches */
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 44px;
+        height: 24px;
+      }
+
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider-switch {
+        position: absolute;
+        cursor: pointer;
+        inset: 0;
+        background-color: rgba(255, 255, 255, 0.08);
+        transition: 0.3s;
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.04);
+      }
+
+      .slider-switch:before {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: 0.3s;
+        border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      input:checked + .slider-switch {
+        background-color: var(--accent-color);
+        box-shadow: 0 0 10px var(--accent-glow);
+      }
+
+      input:checked + .slider-switch:before {
+        transform: translateX(20px);
+      }
+
+      /* Volume Slider */
+      .volume-container {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        width: 140px;
+      }
+
+      .volume-slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 6px;
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.08);
+        outline: none;
+        transition: background 0.3s;
+      }
+
+      .volume-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: var(--accent-color);
+        cursor: pointer;
+        box-shadow: 0 0 8px var(--accent-glow);
+        transition:
+          background 0.3s,
+          transform 0.1s;
+      }
+
+      .volume-slider::-webkit-slider-thumb:hover {
+        transform: scale(1.25);
+      }
+
+      /* Console/Logs Panel */
+      .console-card {
+        background-color: rgba(4, 6, 10, 0.85);
+        border: 1px solid var(--card-border);
+        border-radius: 20px;
+        padding: 1.2rem;
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.8rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
+      }
+
+      .console-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        padding-bottom: 0.5rem;
+        color: var(--text-muted);
+        font-size: 0.75rem;
+      }
+
+      .console-logs {
+        height: 140px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+        scroll-behavior: smooth;
+      }
+
+      /* Custom Scrollbar for console */
+      .console-logs::-webkit-scrollbar {
+        width: 4px;
+      }
+      .console-logs::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .console-logs::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 10px;
+      }
+      .console-logs::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      .log-entry {
+        display: flex;
+        gap: 0.6rem;
+        line-height: 1.4;
+      }
+
+      .log-time {
+        color: var(--text-muted);
+        flex-shrink: 0;
+      }
+
+      .log-text {
+        word-break: break-all;
+      }
+
+      .log-info {
+        color: #3b82f6;
+      }
+      .log-success {
+        color: #10b981;
+      }
+      .log-warning {
+        color: #f59e0b;
+      }
+      .log-danger {
+        color: #ef4444;
+      }
+
+      /* Footer */
+      /* ─── Premium Footer ─── */
+      footer {
+        text-align: center;
+        padding: 3rem 1.5rem 2rem;
+        color: var(--text-muted);
+        margin-top: auto;
+        border-top: 1px solid rgba(255, 255, 255, 0.04);
+        position: relative;
+        z-index: 10;
+      }
+
+      .footer-inner {
+        max-width: 600px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.2rem;
+      }
+
+      .footer-avatar-ring {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        padding: 2.5px;
+        background: linear-gradient(135deg, var(--accent-color), #a855f7, #ec4899);
+        box-shadow: 0 0 25px rgba(168, 85, 247, 0.25);
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+      }
+
+      .footer-avatar-ring:hover {
+        transform: scale(1.08) rotate(3deg);
+        box-shadow: 0 0 40px rgba(168, 85, 247, 0.4);
+      }
+
+      .footer-avatar {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: var(--bg-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Outfit', sans-serif;
+        font-weight: 800;
+        font-size: 1.5rem;
+        color: white;
+        letter-spacing: -0.03em;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      }
+
+      .footer-dev-name {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 800;
+        font-size: 1.35rem;
+        letter-spacing: -0.03em;
+        background: linear-gradient(135deg, #ffffff 30%, #a855f7 60%, var(--accent-color) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        line-height: 1.2;
+      }
+
+      .footer-dev-title {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .footer-dev-title .pulse-dot {
+        width: 6px;
+        height: 6px;
+        background: #10B981;
+        border-radius: 50%;
+        box-shadow: 0 0 8px #10B981;
+        animation: dot-pulse 1.5s infinite alternate;
+      }
+
+      .footer-tech-badges {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 0.2rem;
+      }
+
+      .tech-badge {
+        padding: 0.3rem 0.75rem;
+        border-radius: 100px;
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--text-muted);
+        transition: all 0.3s ease;
+      }
+
+      .tech-badge:hover {
+        border-color: rgba(168, 85, 247, 0.3);
+        color: #c084fc;
+        background: rgba(168, 85, 247, 0.08);
+        transform: translateY(-1px);
+      }
+
+      .tech-badge i {
+        margin-right: 0.3rem;
+        font-size: 0.6rem;
+      }
+
+      .footer-social-links {
+        display: flex;
+        gap: 0.8rem;
+        margin-top: 0.3rem;
+      }
+
+      .social-link {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.05rem;
+        color: var(--text-muted);
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        text-decoration: none;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .social-link:hover {
+        transform: translateY(-3px) scale(1.05);
+        color: white;
+      }
+
+      .social-link.ig:hover {
+        background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        border-color: transparent;
+        box-shadow: 0 6px 20px rgba(225, 48, 108, 0.35);
+      }
+
+      .social-link.gh:hover {
+        background: rgba(255, 255, 255, 0.12);
+        border-color: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 6px 20px rgba(255, 255, 255, 0.08);
+      }
+
+      .footer-divider {
+        width: 50px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.3), transparent);
+        margin: 0.2rem 0;
+      }
+
+      .footer-copy {
+        font-size: 0.7rem;
+        color: rgba(143, 156, 174, 0.5);
+        font-family: 'Share Tech Mono', monospace;
+        letter-spacing: 0.04em;
+      }
+
+      .footer-copy .heart {
+        color: #ef4444;
+        display: inline-block;
+        animation: heartbeat 1.2s infinite;
+      }
+
+      @keyframes heartbeat {
+        0%, 100% { transform: scale(1); }
+        15% { transform: scale(1.25); }
+        30% { transform: scale(1); }
+        45% { transform: scale(1.15); }
+        60% { transform: scale(1); }
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <!-- Dynamic Ambient Radial Backgrounds -->
     <div class="ambient-light" id="ambient-glow"></div>
     <div class="ambient-light-bottom"></div>
 
     <div class="app-container">
-        <!-- Header -->
-        <header>
-            <h1 class="logo" id="app-logo">Foto Kita<span>Blur</span></h1>
-            <p>Aplikasi deteksi gesture tangan interaktif dengan efek visual & musik dinamis berbasis OpenCV dan MediaPipe.</p>
-            <div class="status-badge">
-                <span class="dot" id="status-dot"></span>
-                <span id="status-text">Kamera Mati</span>
-            </div>
-        </header>
-
-        <!-- Main Workspace -->
-        <div class="app-grid">
-            
-            <!-- Left Side: Interactive Video Feed -->
-            <div class="stream-column">
-                <div class="video-wrapper" id="camera-wrapper">
-                    <!-- Dynamic Background Ambient Aura inside wrapper -->
-                    <div class="camera-aura" id="camera-aura"></div>
-                    
-                    <!-- Vignette red pulse for Fist -->
-                    <div class="vignette-overlay" id="fist-vignette"></div>
-                    
-                    <!-- Glitch Overlay -->
-                    <div class="glitch-overlay" id="glitch-overlay"></div>
-                    
-                    <!-- Scanline Overlay -->
-                    <div class="scanlines" id="scanlines-overlay"></div>
-                    
-                    <!-- Film Grain (for V sign mode) -->
-                    <div class="film-grain" id="film-grain-overlay"></div>
-                    
-                    <!-- Cinematic Letterbox Bars (for V sign mode) -->
-                    <div class="cinematic-bar top-bar" id="cinematic-top"></div>
-                    <div class="cinematic-bar bottom-bar" id="cinematic-bottom"></div>
-                    
-                    <!-- HUD Cyberpunk Corner Brackets -->
-                    <div class="hud-bracket top-left hud-element" id="hud-bl"></div>
-                    <div class="hud-bracket top-right hud-element" id="hud-br"></div>
-                    <div class="hud-bracket bottom-left hud-element" id="hud-dl"></div>
-                    <div class="hud-bracket bottom-right hud-element" id="hud-dr"></div>
-                    
-                    <!-- HUD Header: REC indicator & Metadata -->
-                    <div class="hud-header hud-element" id="hud-header">
-                        <div class="hud-rec-group">
-                            <span class="hud-rec-dot"></span>
-                            <span class="hud-rec-text" id="hud-rec-text">REC</span>
-                        </div>
-                        <div class="hud-meta" id="hud-resolution">RAW 4:3 | 30 FPS</div>
-                    </div>
-
-                    <!-- HUD Center Crosshair -->
-                    <div class="hud-crosshair hud-element" id="hud-crosshair"></div>
-
-                    <!-- HUD Footer: Digital Timer & Battery -->
-                    <div class="hud-footer hud-element" id="hud-footer">
-                        <div class="hud-timer" id="hud-timer">00:00:00</div>
-                        <div class="hud-battery">
-                            <i class="fa-solid fa-battery-three-quarters" id="hud-battery-icon"></i> <span id="hud-battery-percent">85%</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Hidden video input for camera capture -->
-                    <video id="webcam-input" autoplay playsinline style="display: none;"></video>
-                    
-                    <!-- Canvas for rendering processed video -->
-                    <canvas class="video-feed" id="video-canvas"></canvas>
-                    
-                    <!-- Floating high-res typewriter overlay for V sign -->
-                    <div class="typewriter-overlay" id="text-overlay"></div>
-                    
-                    <!-- Placeholder Screen (Click to start) -->
-                    <div class="placeholder-screen" id="camera-placeholder">
-                        <div class="placeholder-icon" id="placeholder-icon">
-                            <i class="fa-solid fa-camera"></i>
-                        </div>
-                        <div>
-                            <h3 style="color: white; margin-bottom: 0.5rem; font-size: 1.25rem;">Siap Memulai?</h3>
-                            <p style="font-size: 0.9rem; margin-bottom: 1.5rem; max-width: 320px;">Aktifkan kamera untuk mendeteksi gesture tangan (Peace, Thumbs Up, Fist).</p>
-                        </div>
-                        <button class="btn-start-stream" id="start-cam-btn">
-                            <i class="fa-solid fa-play"></i> Aktifkan Kamera
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right Side: Control & Feedback Hub -->
-            <div class="control-column">
-                
-                <!-- Active Gesture Card -->
-                <div class="glass-card" style="padding-bottom: 2rem;">
-                    <h2 class="panel-title"><i class="fa-solid fa-hand-sparkles"></i> Gesture Terdeteksi</h2>
-                    
-                    <div class="gesture-card" id="gesture-display-box">
-                        <span class="gesture-badge" id="active-gesture-badge">Normal</span>
-                        <div class="gesture-title" id="active-gesture-title">
-                            <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 1.4rem;"></i> Menunggu...
-                        </div>
-                        <p class="gesture-desc" id="active-gesture-desc">Pose tangan normal untuk melihat visual skeleton.</p>
-                    </div>
-                </div>
-
-                <!-- Controls & Audio Settings -->
-                <div class="glass-card">
-                    <h2 class="panel-title"><i class="fa-solid fa-sliders"></i> Pengaturan Web</h2>
-                    
-                    <div class="controls-list">
-                        <!-- Play Audio Toggle -->
-                        <div class="control-item">
-                            <span class="control-label">
-                                <i class="fa-solid fa-volume-high" id="volume-icon"></i> Audio Browser
-                            </span>
-                            <div style="display: flex; align-items: center; gap: 1rem;">
-                                <label class="switch">
-                                    <input type="checkbox" id="audio-toggle" checked>
-                                    <span class="slider-switch"></span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- Volume control -->
-                        <div class="control-item">
-                            <span class="control-label">
-                                <i class="fa-solid fa-volume-low"></i> Volume
-                            </span>
-                            <div class="volume-container">
-                                <input type="range" min="0" max="100" value="80" class="volume-slider" id="volume-slider">
-                            </div>
-                        </div>
-
-                        <!-- Active Camera Track Info -->
-                        <div class="control-item">
-                            <span class="control-label">
-                                <i class="fa-solid fa-music"></i> Sound Active
-                            </span>
-                            <span id="active-track-name" style="font-size: 0.8rem; font-weight: 700; color: var(--accent-color); max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: color 0.5s ease;">
-                                None
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Real-time Console Logs -->
-                <div class="console-card">
-                    <div class="console-header">
-                        <span>LIVE EVENT DIODE LOGS</span>
-                        <span id="console-pulse-status" style="color: var(--accent-color); transition: color 0.5s ease;">● STANDBY</span>
-                    </div>
-                    <div class="console-logs" id="console-logs-div">
-                        <div class="log-entry">
-                            <span class="log-time">[16:00:00]</span>
-                            <span class="log-text log-info">System initialized. Waiting for camera start.</span>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
+      <!-- Header -->
+      <header>
+        <h1 class="logo" id="app-logo">Foto Kita<span>Blur</span></h1>
+        <p>
+          Aplikasi deteksi gesture tangan interaktif dengan efek visual & musik
+          dinamis berbasis OpenCV dan MediaPipe.
+        </p>
+        <div class="status-badge">
+          <span class="dot" id="status-dot"></span>
+          <span id="status-text">Kamera Mati</span>
         </div>
+      </header>
+
+      <!-- Main Workspace -->
+      <div class="app-grid">
+        <!-- Left Side: Interactive Video Feed -->
+        <div class="stream-column">
+          <div class="video-wrapper" id="camera-wrapper">
+            <!-- Dynamic Background Ambient Aura inside wrapper -->
+            <div class="camera-aura" id="camera-aura"></div>
+
+            <!-- Vignette red pulse for Fist -->
+            <div class="vignette-overlay" id="fist-vignette"></div>
+
+            <!-- Glitch Overlay -->
+            <div class="glitch-overlay" id="glitch-overlay"></div>
+
+            <!-- Scanline Overlay -->
+            <div class="scanlines" id="scanlines-overlay"></div>
+
+            <!-- Film Grain (for V sign mode) -->
+            <div class="film-grain" id="film-grain-overlay"></div>
+
+            <!-- Cinematic Letterbox Bars (for V sign mode) -->
+            <div class="cinematic-bar top-bar" id="cinematic-top"></div>
+            <div class="cinematic-bar bottom-bar" id="cinematic-bottom"></div>
+
+            <!-- HUD Cyberpunk Corner Brackets -->
+            <div class="hud-bracket top-left hud-element" id="hud-bl"></div>
+            <div class="hud-bracket top-right hud-element" id="hud-br"></div>
+            <div class="hud-bracket bottom-left hud-element" id="hud-dl"></div>
+            <div class="hud-bracket bottom-right hud-element" id="hud-dr"></div>
+
+            <!-- HUD Header: REC indicator & Metadata -->
+            <div class="hud-header hud-element" id="hud-header">
+              <div class="hud-rec-group">
+                <span class="hud-rec-dot"></span>
+                <span class="hud-rec-text" id="hud-rec-text">REC</span>
+              </div>
+              <div class="hud-meta" id="hud-resolution">RAW 4:3 | 30 FPS</div>
+            </div>
+
+            <!-- HUD Center Crosshair -->
+            <div class="hud-crosshair hud-element" id="hud-crosshair"></div>
+
+            <!-- HUD Footer: Digital Timer & Battery -->
+            <div class="hud-footer hud-element" id="hud-footer">
+              <div class="hud-timer" id="hud-timer">00:00:00</div>
+              <div class="hud-battery">
+                <i
+                  class="fa-solid fa-battery-three-quarters"
+                  id="hud-battery-icon"
+                ></i>
+                <span id="hud-battery-percent">85%</span>
+              </div>
+            </div>
+
+            <!-- Hidden video input for camera capture -->
+            <video
+              id="webcam-input"
+              autoplay
+              playsinline
+              style="display: none"
+            ></video>
+
+            <!-- Canvas for rendering processed video -->
+            <canvas class="video-feed" id="video-canvas"></canvas>
+
+            <!-- Floating high-res typewriter overlay for V sign -->
+            <div class="typewriter-overlay" id="text-overlay"></div>
+
+            <!-- Placeholder Screen (Click to start) -->
+            <div class="placeholder-screen" id="camera-placeholder">
+              <div class="placeholder-icon" id="placeholder-icon">
+                <i class="fa-solid fa-camera"></i>
+              </div>
+              <div>
+                <h3
+                  style="
+                    color: white;
+                    margin-bottom: 0.5rem;
+                    font-size: 1.25rem;
+                  "
+                >
+                  Siap Memulai?
+                </h3>
+                <p
+                  style="
+                    font-size: 0.9rem;
+                    margin-bottom: 1.5rem;
+                    max-width: 320px;
+                  "
+                >
+                  Aktifkan kamera untuk mendeteksi gesture tangan (Peace, Thumbs
+                  Up, Fist).
+                </p>
+              </div>
+              <button class="btn-start-stream" id="start-cam-btn">
+                <i class="fa-solid fa-play"></i> Aktifkan Kamera
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side: Control & Feedback Hub -->
+        <div class="control-column">
+          <!-- Active Gesture Card -->
+          <div class="glass-card" style="padding-bottom: 2rem">
+            <h2 class="panel-title">
+              <i class="fa-solid fa-hand-sparkles"></i> Gesture Terdeteksi
+            </h2>
+
+            <div class="gesture-card" id="gesture-display-box">
+              <span class="gesture-badge" id="active-gesture-badge"
+                >Normal</span
+              >
+              <div class="gesture-title" id="active-gesture-title">
+                <i
+                  class="fa-solid fa-circle-notch fa-spin"
+                  style="font-size: 1.4rem"
+                ></i>
+                Menunggu...
+              </div>
+              <p class="gesture-desc" id="active-gesture-desc">
+                Pose tangan normal untuk melihat visual skeleton.
+              </p>
+            </div>
+          </div>
+
+          <!-- Controls & Audio Settings -->
+          <div class="glass-card">
+            <h2 class="panel-title">
+              <i class="fa-solid fa-sliders"></i> Pengaturan Web
+            </h2>
+
+            <div class="controls-list">
+              <!-- Play Audio Toggle -->
+              <div class="control-item">
+                <span class="control-label">
+                  <i class="fa-solid fa-volume-high" id="volume-icon"></i> Audio
+                  Browser
+                </span>
+                <div style="display: flex; align-items: center; gap: 1rem">
+                  <label class="switch">
+                    <input type="checkbox" id="audio-toggle" checked />
+                    <span class="slider-switch"></span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Volume control -->
+              <div class="control-item">
+                <span class="control-label">
+                  <i class="fa-solid fa-volume-low"></i> Volume
+                </span>
+                <div class="volume-container">
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="80"
+                    class="volume-slider"
+                    id="volume-slider"
+                  />
+                </div>
+              </div>
+
+              <!-- Active Camera Track Info -->
+              <div class="control-item">
+                <span class="control-label">
+                  <i class="fa-solid fa-music"></i> Sound Active
+                </span>
+                <span
+                  id="active-track-name"
+                  style="
+                    font-size: 0.8rem;
+                    font-weight: 700;
+                    color: var(--accent-color);
+                    max-width: 160px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    transition: color 0.5s ease;
+                  "
+                >
+                  None
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Real-time Console Logs -->
+          <div class="console-card">
+            <div class="console-header">
+              <span>LIVE EVENT DIODE LOGS</span>
+              <span
+                id="console-pulse-status"
+                style="color: var(--accent-color); transition: color 0.5s ease"
+                >● STANDBY</span
+              >
+            </div>
+            <div class="console-logs" id="console-logs-div">
+              <div class="log-entry">
+                <span class="log-time">[16:00:00]</span>
+                <span class="log-text log-info"
+                  >System initialized. Waiting for camera start.</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <footer>
-        <p>&copy; 2026 Foto Kita Blur Hub. Powered by MediaPipe JS & Canvas. Design styled with dynamic HUD details.</p>
+      <div class="footer-inner">
+        <!-- Avatar Ring -->
+        <a href="https://www.instagram.com/dimzzzzzzz277/" target="_blank" rel="noopener" class="footer-avatar-ring">
+          <div class="footer-avatar">DG</div>
+        </a>
+
+        <!-- Name & Title -->
+        <div class="footer-dev-name">Dimas Galih Sampurna</div>
+        <div class="footer-dev-title">
+          <span class="pulse-dot"></span>
+          AI Engineer &amp; Creative Developer
+        </div>
+
+        <!-- Tech Stack Badges -->
+        <div class="footer-tech-badges">
+          <span class="tech-badge"><i class="fa-brands fa-python"></i>Python</span>
+          <span class="tech-badge"><i class="fa-solid fa-brain"></i>MediaPipe</span>
+          <span class="tech-badge"><i class="fa-solid fa-eye"></i>OpenCV</span>
+          <span class="tech-badge"><i class="fa-brands fa-js"></i>JavaScript</span>
+          <span class="tech-badge"><i class="fa-solid fa-microchip"></i>TensorFlow</span>
+        </div>
+
+        <!-- Social Links -->
+        <div class="footer-social-links">
+          <a href="https://www.instagram.com/dimzzzzzzz277/" target="_blank" rel="noopener" class="social-link ig" title="Instagram">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+          <a href="https://github.com/Dimzzzzzzz277" target="_blank" rel="noopener" class="social-link gh" title="GitHub">
+            <i class="fa-brands fa-github"></i>
+          </a>
+        </div>
+
+        <!-- Divider -->
+        <div class="footer-divider"></div>
+
+        <!-- Copyright -->
+        <div class="footer-copy">
+          &copy; 2026 &mdash; crafted with <span class="heart">&hearts;</span> by Dimas Galih Sampurna
+        </div>
+      </div>
     </footer>
 
     <!-- Audio & UI Interaction Logic -->
     <script type="module">
-        // Setup Web Audio using relative paths (compatible with GitHub Pages)
-        const audioTracks = {
-            vsign: new Audio('FOTO KITA BLUR - SAL PRIADI (mp3cut.net).mp3'),
-            fist: new Audio('Hidup jokowi  sound meme.mp3')
-        };
-        
-        // Loop tracks
-        audioTracks.vsign.loop = true;
-        audioTracks.fist.loop = true;
-        
-        let audioEnabled = true;
-        let globalVolume = 0.8;
-        let isRunning = false;
-        let currentMode = "NORMAL";
-        let streamStartTime = 0;
-        let timerInterval = null;
-        let thumbsAnimStart = 0;
-        let fistAnimStart = 0;
-        let typewriterInterval = null;
+      // Setup Web Audio using relative paths (compatible with GitHub Pages)
+      const audioTracks = {
+        vsign: new Audio("FOTO KITA BLUR - SAL PRIADI (mp3cut.net).mp3"),
+        fist: new Audio("Hidup jokowi  sound meme.mp3"),
+      };
 
-        // Apply Initial Volume
-        audioTracks.vsign.volume = globalVolume;
-        audioTracks.fist.volume = globalVolume;
+      // Loop tracks
+      audioTracks.vsign.loop = true;
+      audioTracks.fist.loop = true;
 
-        // DOM Elements
-        const startCamBtn = document.getElementById('start-cam-btn');
-        const cameraPlaceholder = document.getElementById('camera-placeholder');
-        const videoCanvas = document.getElementById('video-canvas');
-        const webcamInput = document.getElementById('webcam-input');
-        const cameraWrapper = document.getElementById('camera-wrapper');
-        const cameraAura = document.getElementById('camera-aura');
-        const fistVignette = document.getElementById('fist-vignette');
-        const glitchOverlay = document.getElementById('glitch-overlay');
-        const scanlinesOverlay = document.getElementById('scanlines-overlay');
-        const filmGrainOverlay = document.getElementById('film-grain-overlay');
-        const cinematicTop = document.getElementById('cinematic-top');
-        const cinematicBottom = document.getElementById('cinematic-bottom');
-        const textOverlay = document.getElementById('text-overlay');
-        const statusText = document.getElementById('status-text');
-        const statusDot = document.getElementById('status-dot');
-        const ambientGlow = document.getElementById('ambient-glow');
-        const appLogo = document.getElementById('app-logo');
-        const activeGestureBadge = document.getElementById('active-gesture-badge');
-        const activeGestureTitle = document.getElementById('active-gesture-title');
-        const activeGestureDesc = document.getElementById('active-gesture-desc');
-        const gestureDisplayBox = document.getElementById('gesture-display-box');
-        const audioToggle = document.getElementById('audio-toggle');
-        const volumeSlider = document.getElementById('volume-slider');
-        const activeTrackName = document.getElementById('active-track-name');
-        const consoleLogsDiv = document.getElementById('console-logs-div');
-        const volumeIcon = document.getElementById('volume-icon');
-        const placeholderIcon = document.getElementById('placeholder-icon');
-        const consolePulseStatus = document.getElementById('console-pulse-status');
-        
-        // HUD elements list for activation
-        const hudElements = document.querySelectorAll('.hud-element');
-        const hudCrosshair = document.getElementById('hud-crosshair');
+      let audioEnabled = true;
+      let globalVolume = 0.8;
+      let isRunning = false;
+      let currentMode = "NORMAL";
+      let streamStartTime = 0;
+      let timerInterval = null;
+      let thumbsAnimStart = 0;
+      let fistAnimStart = 0;
+      let typewriterInterval = null;
 
-        // Mode configurations mapping
-        const modeConfigs = {
-            "NORMAL": {
-                name: "Normal Mode",
-                badge: "Normal",
-                color: "var(--normal-color)",
-                glow: "var(--normal-glow)",
-                desc: "Pose tangan normal untuk melihat visual skeleton.",
-                icon: "fa-solid fa-hand",
-                sound: null
+      // Apply Initial Volume
+      audioTracks.vsign.volume = globalVolume;
+      audioTracks.fist.volume = globalVolume;
+
+      // DOM Elements
+      const startCamBtn = document.getElementById("start-cam-btn");
+      const cameraPlaceholder = document.getElementById("camera-placeholder");
+      const videoCanvas = document.getElementById("video-canvas");
+      const webcamInput = document.getElementById("webcam-input");
+      const cameraWrapper = document.getElementById("camera-wrapper");
+      const cameraAura = document.getElementById("camera-aura");
+      const fistVignette = document.getElementById("fist-vignette");
+      const glitchOverlay = document.getElementById("glitch-overlay");
+      const scanlinesOverlay = document.getElementById("scanlines-overlay");
+      const filmGrainOverlay = document.getElementById("film-grain-overlay");
+      const cinematicTop = document.getElementById("cinematic-top");
+      const cinematicBottom = document.getElementById("cinematic-bottom");
+      const textOverlay = document.getElementById("text-overlay");
+      const statusText = document.getElementById("status-text");
+      const statusDot = document.getElementById("status-dot");
+      const ambientGlow = document.getElementById("ambient-glow");
+      const appLogo = document.getElementById("app-logo");
+      const activeGestureBadge = document.getElementById(
+        "active-gesture-badge",
+      );
+      const activeGestureTitle = document.getElementById(
+        "active-gesture-title",
+      );
+      const activeGestureDesc = document.getElementById("active-gesture-desc");
+      const gestureDisplayBox = document.getElementById("gesture-display-box");
+      const audioToggle = document.getElementById("audio-toggle");
+      const volumeSlider = document.getElementById("volume-slider");
+      const activeTrackName = document.getElementById("active-track-name");
+      const consoleLogsDiv = document.getElementById("console-logs-div");
+      const volumeIcon = document.getElementById("volume-icon");
+      const placeholderIcon = document.getElementById("placeholder-icon");
+      const consolePulseStatus = document.getElementById(
+        "console-pulse-status",
+      );
+
+      // HUD elements list for activation
+      const hudElements = document.querySelectorAll(".hud-element");
+      const hudCrosshair = document.getElementById("hud-crosshair");
+
+      // Mode configurations mapping
+      const modeConfigs = {
+        NORMAL: {
+          name: "Normal Mode",
+          badge: "Normal",
+          color: "var(--normal-color)",
+          glow: "var(--normal-glow)",
+          desc: "Pose tangan normal untuk melihat visual skeleton.",
+          icon: "fa-solid fa-hand",
+          sound: null,
+        },
+        V_SIGN: {
+          name: "Peace Mode",
+          badge: "V-Sign",
+          color: "var(--vsign-color)",
+          glow: "var(--vsign-glow)",
+          desc: "Foto kita blur. Memutar lagu Sal Priadi.",
+          icon: "fa-solid fa-hand-peace",
+          sound: "vsign",
+          soundName: "Sal Priadi - Foto Kita Blur",
+        },
+        THUMBS_UP: {
+          name: "Mantap Mode",
+          badge: "Thumbs Up",
+          color: "var(--thumbs-color)",
+          glow: "var(--thumbs-glow)",
+          desc: "Mantap! Efek neon edge detection diaktifkan.",
+          icon: "fa-solid fa-thumbs-up",
+          sound: null,
+        },
+        FIST: {
+          name: "Jokowi Mode",
+          badge: "Fist",
+          color: "var(--fist-color)",
+          glow: "var(--fist-glow)",
+          desc: "Hidup Jokowi!!! Layar bergoyang merah.",
+          icon: "fa-solid fa-hand-fist",
+          sound: "fist",
+          soundName: "Meme - Hidup Jokowi",
+        },
+      };
+
+      // Hand Skeleton Connections Mapping
+      const HAND_CONNECTIONS = [
+        [0, 1],
+        [1, 2],
+        [2, 3],
+        [3, 4],
+        [0, 5],
+        [5, 6],
+        [6, 7],
+        [7, 8],
+        [9, 10],
+        [10, 11],
+        [11, 12],
+        [13, 14],
+        [14, 15],
+        [15, 16],
+        [0, 17],
+        [17, 18],
+        [18, 19],
+        [19, 20],
+        [5, 9],
+        [9, 13],
+        [13, 17],
+      ];
+
+      // Offscreen canvas for Sobel filter optimization (low resolution = fast processing)
+      const sobelCanvas = document.createElement("canvas");
+      const sobelCtx = sobelCanvas.getContext("2d");
+
+      // GestureDetector class translated from Python
+      class GestureDetector {
+        constructor() {
+          this.FINGER_TIPS = [8, 12, 16, 20];
+          this.FINGER_PIPS = [6, 10, 14, 18];
+          this.debounceBuffer = [];
+          this.DEBOUNCE_FRAMES = 3;
+          this.stableMode = "NORMAL";
+        }
+
+        _fingerUp(lm, tipIdx, pipIdx) {
+          return lm[tipIdx].y < lm[pipIdx].y;
+        }
+
+        _isThumbsUp(lm, fingersUp) {
+          if (fingersUp.some((val) => val)) return false;
+
+          const thumbTip = lm[4];
+          const indexMcp = lm[5];
+          const wrist = lm[0];
+
+          const handHeight = Math.abs(wrist.y - indexMcp.y);
+          if (handHeight < 0.01) return false;
+
+          const thumbAbove = indexMcp.y - thumbTip.y;
+          return thumbAbove > handHeight * 0.3;
+        }
+
+        _isFist(lm, fingersUp) {
+          if (fingersUp.some((val) => val)) return false;
+
+          const thumbTip = lm[4];
+          const indexMcp = lm[5];
+          const wrist = lm[0];
+
+          const handHeight = Math.abs(wrist.y - indexMcp.y);
+          if (handHeight < 0.01) return false;
+
+          const thumbAbove = indexMcp.y - thumbTip.y;
+          return thumbAbove <= handHeight * 0.3;
+        }
+
+        debounce(rawMode) {
+          this.debounceBuffer.push(rawMode);
+          if (this.debounceBuffer.length > this.DEBOUNCE_FRAMES) {
+            this.debounceBuffer.shift();
+          }
+
+          if (
+            this.debounceBuffer.length === this.DEBOUNCE_FRAMES &&
+            this.debounceBuffer.every((m) => m === rawMode)
+          ) {
+            this.stableMode = rawMode;
+          }
+          return this.stableMode;
+        }
+
+        detect(landmarks) {
+          const fingersUp = this.FINGER_TIPS.map((tip, idx) =>
+            this._fingerUp(landmarks, tip, this.FINGER_PIPS[idx]),
+          );
+          const [indexUp, middleUp, ringUp, pinkyUp] = fingersUp;
+
+          if (indexUp && middleUp && !ringUp && !pinkyUp) {
+            return this.debounce("V_SIGN");
+          }
+
+          if (this._isThumbsUp(landmarks, fingersUp)) {
+            return this.debounce("THUMBS_UP");
+          }
+
+          if (this._isFist(landmarks, fingersUp)) {
+            return this.debounce("FIST");
+          }
+
+          return this.debounce("NORMAL");
+        }
+      }
+
+      const gestureDetector = new GestureDetector();
+      let handLandmarker = null;
+
+      // Load MediaPipe Model from official Google storage
+      async function initMediaPipe() {
+        addLog("Mengunduh modul AI MediaPipe (WASM)...", "info");
+        try {
+          // Dynamically import the vision bundle as an ES Module
+          const visionModule =
+            await import("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.8/vision_bundle.mjs");
+          const { FilesetResolver, HandLandmarker } = visionModule;
+
+          const vision = await FilesetResolver.forVisionTasks(
+            "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.8/wasm",
+          );
+
+          addLog("Memuat model deteksi tangan...", "info");
+          handLandmarker = await HandLandmarker.createFromOptions(vision, {
+            baseOptions: {
+              modelAssetPath:
+                "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
+              delegate: "GPU",
             },
-            "V_SIGN": {
-                name: "Peace Mode",
-                badge: "V-Sign",
-                color: "var(--vsign-color)",
-                glow: "var(--vsign-glow)",
-                desc: "Foto kita blur. Memutar lagu Sal Priadi.",
-                icon: "fa-solid fa-hand-peace",
-                sound: "vsign",
-                soundName: "Sal Priadi - Foto Kita Blur"
-            },
-            "THUMBS_UP": {
-                name: "Mantap Mode",
-                badge: "Thumbs Up",
-                color: "var(--thumbs-color)",
-                glow: "var(--thumbs-glow)",
-                desc: "Mantap! Efek neon edge detection diaktifkan.",
-                icon: "fa-solid fa-thumbs-up",
-                sound: null
-            },
-            "FIST": {
-                name: "Jokowi Mode",
-                badge: "Fist",
-                color: "var(--fist-color)",
-                glow: "var(--fist-glow)",
-                desc: "Hidup Jokowi!!! Layar bergoyang merah.",
-                icon: "fa-solid fa-hand-fist",
-                sound: "fist",
-                soundName: "Meme - Hidup Jokowi"
-            }
-        };
+            runningMode: "VIDEO",
+            numHands: 1,
+          });
+          addLog("Sistem AI siap digunakan!", "success");
+          return true;
+        } catch (err) {
+          addLog("Gagal memuat MediaPipe: " + err.message, "danger");
+          console.error(err);
+          return false;
+        }
+      }
 
-        // Hand Skeleton Connections Mapping
-        const HAND_CONNECTIONS = [
-            [0, 1], [1, 2], [2, 3], [3, 4],
-            [0, 5], [5, 6], [6, 7], [7, 8],
-            [9, 10], [10, 11], [11, 12],
-            [13, 14], [14, 15], [15, 16],
-            [0, 17], [17, 18], [18, 19], [19, 20],
-            [5, 9], [9, 13], [13, 17]
+      // Draw hand landmarks manually on canvas
+      function drawLandmarks(ctx, landmarks) {
+        const w = ctx.canvas.width;
+        const h = ctx.canvas.height;
+
+        // Draw skeleton connections
+        ctx.strokeStyle = "rgba(0, 255, 255, 0.85)";
+        ctx.lineWidth = 3.5;
+        ctx.shadowBlur = 4;
+        ctx.shadowColor = "rgba(0, 255, 255, 0.5)";
+
+        for (const [startIdx, endIdx] of HAND_CONNECTIONS) {
+          const startPt = landmarks[startIdx];
+          const endPt = landmarks[endIdx];
+          ctx.beginPath();
+          ctx.moveTo(startPt.x * w, startPt.y * h);
+          ctx.lineTo(endPt.x * w, endPt.y * h);
+          ctx.stroke();
+        }
+
+        // Draw joint circles
+        ctx.fillStyle = "rgba(255, 220, 0, 1)";
+        ctx.shadowBlur = 0; // reset
+        for (const lm of landmarks) {
+          ctx.beginPath();
+          ctx.arc(lm.x * w, lm.y * h, 4.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      // Center outline text drawer on canvas (CV2 simulation)
+      function drawTextCentered(ctx, text, fontSize, color, outlineColor) {
+        ctx.save();
+        ctx.font = `bold ${fontSize}px 'Outfit', sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.strokeStyle = outlineColor;
+        ctx.lineWidth = 6;
+        ctx.strokeText(text, ctx.canvas.width / 2, ctx.canvas.height / 2);
+        ctx.fillStyle = color;
+        ctx.fillText(text, ctx.canvas.width / 2, ctx.canvas.height / 2);
+        ctx.restore();
+      }
+
+      // Downscaled Sobel Edge detection filter (highly optimized)
+      function applySobelFilter(ctx, width, height) {
+        sobelCanvas.width = 320;
+        sobelCanvas.height = 240;
+        sobelCtx.drawImage(ctx.canvas, 0, 0, 320, 240);
+
+        const imgData = sobelCtx.getImageData(0, 0, 320, 240);
+        const data = imgData.data;
+        const output = sobelCtx.createImageData(320, 240);
+        const outData = output.data;
+
+        const w = 320;
+        const h = 240;
+
+        // Sobel operators
+        const kx = [
+          [-1, 0, 1],
+          [-2, 0, 2],
+          [-1, 0, 1],
+        ];
+        const ky = [
+          [-1, -2, -1],
+          [0, 0, 0],
+          [1, 2, 1],
         ];
 
-        // Offscreen canvas for Sobel filter optimization (low resolution = fast processing)
-        const sobelCanvas = document.createElement('canvas');
-        const sobelCtx = sobelCanvas.getContext('2d');
+        for (let y = 1; y < h - 1; y++) {
+          for (let x = 1; x < w - 1; x++) {
+            let pixelX = 0;
+            let pixelY = 0;
 
-        // GestureDetector class translated from Python
-        class GestureDetector {
-            constructor() {
-                this.FINGER_TIPS = [8, 12, 16, 20];
-                this.FINGER_PIPS = [6, 10, 14, 18];
-                this.debounceBuffer = [];
-                this.DEBOUNCE_FRAMES = 3;
-                this.stableMode = "NORMAL";
+            for (let kyIdx = 0; kyIdx < 3; kyIdx++) {
+              for (let kxIdx = 0; kxIdx < 3; kxIdx++) {
+                const py = y + kyIdx - 1;
+                const px = x + kxIdx - 1;
+                const idx = (py * w + px) * 4;
+                const r = data[idx];
+                const g = data[idx + 1];
+                const b = data[idx + 2];
+                const gray = 0.299 * r + 0.587 * g + 0.114 * b;
+
+                pixelX += gray * kx[kyIdx][kxIdx];
+                pixelY += gray * ky[kyIdx][kxIdx];
+              }
             }
 
-            _fingerUp(lm, tipIdx, pipIdx) {
-                return lm[tipIdx].y < lm[pipIdx].y;
-            }
+            const val = Math.sqrt(pixelX * pixelX + pixelY * pixelY);
+            const destIdx = (y * w + x) * 4;
 
-            _isThumbsUp(lm, fingersUp) {
-                if (fingersUp.some(val => val)) return false;
-                
-                const thumbTip = lm[4];
-                const indexMcp = lm[5];
-                const wrist = lm[0];
-                
-                const handHeight = Math.abs(wrist.y - indexMcp.y);
-                if (handHeight < 0.01) return false;
-                
-                const thumbAbove = indexMcp.y - thumbTip.y;
-                return thumbAbove > handHeight * 0.3;
-            }
-
-            _isFist(lm, fingersUp) {
-                if (fingersUp.some(val => val)) return false;
-                
-                const thumbTip = lm[4];
-                const indexMcp = lm[5];
-                const wrist = lm[0];
-                
-                const handHeight = Math.abs(wrist.y - indexMcp.y);
-                if (handHeight < 0.01) return false;
-                
-                const thumbAbove = indexMcp.y - thumbTip.y;
-                return thumbAbove <= handHeight * 0.3;
-            }
-
-            debounce(rawMode) {
-                this.debounceBuffer.push(rawMode);
-                if (this.debounceBuffer.length > this.DEBOUNCE_FRAMES) {
-                    this.debounceBuffer.shift();
-                }
-                
-                if (this.debounceBuffer.length === this.DEBOUNCE_FRAMES &&
-                    this.debounceBuffer.every(m => m === rawMode)) {
-                    this.stableMode = rawMode;
-                }
-                return this.stableMode;
-            }
-
-            detect(landmarks) {
-                const fingersUp = this.FINGER_TIPS.map((tip, idx) => 
-                    this._fingerUp(landmarks, tip, this.FINGER_PIPS[idx])
-                );
-                const [indexUp, middleUp, ringUp, pinkyUp] = fingersUp;
-
-                if (indexUp && middleUp && !ringUp && !pinkyUp) {
-                    return this.debounce("V_SIGN");
-                }
-
-                if (this._isThumbsUp(landmarks, fingersUp)) {
-                    return this.debounce("THUMBS_UP");
-                }
-
-                if (this._isFist(landmarks, fingersUp)) {
-                    return this.debounce("FIST");
-                }
-
-                return this.debounce("NORMAL");
-            }
-        }
-
-        const gestureDetector = new GestureDetector();
-        let handLandmarker = null;
-
-        // Load MediaPipe Model from official Google storage
-        async function initMediaPipe() {
-            addLog("Mengunduh modul AI MediaPipe (WASM)...", "info");
-            try {
-                // Dynamically import the vision bundle as an ES Module
-                const visionModule = await import("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.8/vision_bundle.mjs");
-                const { FilesetResolver, HandLandmarker } = visionModule;
-                
-                const vision = await FilesetResolver.forVisionTasks(
-                    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.8/wasm"
-                );
-                
-                addLog("Memuat model deteksi tangan...", "info");
-                handLandmarker = await HandLandmarker.createFromOptions(vision, {
-                    baseOptions: {
-                        modelAssetPath: "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
-                        delegate: "GPU"
-                    },
-                    runningMode: "VIDEO",
-                    numHands: 1
-                });
-                addLog("Sistem AI siap digunakan!", "success");
-                return true;
-            } catch (err) {
-                addLog("Gagal memuat MediaPipe: " + err.message, "danger");
-                console.error(err);
-                return false;
-            }
-        }
-
-        // Draw hand landmarks manually on canvas
-        function drawLandmarks(ctx, landmarks) {
-            const w = ctx.canvas.width;
-            const h = ctx.canvas.height;
-            
-            // Draw skeleton connections
-            ctx.strokeStyle = "rgba(0, 255, 255, 0.85)";
-            ctx.lineWidth = 3.5;
-            ctx.shadowBlur = 4;
-            ctx.shadowColor = "rgba(0, 255, 255, 0.5)";
-            
-            for (const [startIdx, endIdx] of HAND_CONNECTIONS) {
-                const startPt = landmarks[startIdx];
-                const endPt = landmarks[endIdx];
-                ctx.beginPath();
-                ctx.moveTo(startPt.x * w, startPt.y * h);
-                ctx.lineTo(endPt.x * w, endPt.y * h);
-                ctx.stroke();
-            }
-            
-            // Draw joint circles
-            ctx.fillStyle = "rgba(255, 220, 0, 1)";
-            ctx.shadowBlur = 0; // reset
-            for (const lm of landmarks) {
-                ctx.beginPath();
-                ctx.arc(lm.x * w, lm.y * h, 4.5, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        // Center outline text drawer on canvas (CV2 simulation)
-        function drawTextCentered(ctx, text, fontSize, color, outlineColor) {
-            ctx.save();
-            ctx.font = `bold ${fontSize}px 'Outfit', sans-serif`;
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.strokeStyle = outlineColor;
-            ctx.lineWidth = 6;
-            ctx.strokeText(text, ctx.canvas.width / 2, ctx.canvas.height / 2);
-            ctx.fillStyle = color;
-            ctx.fillText(text, ctx.canvas.width / 2, ctx.canvas.height / 2);
-            ctx.restore();
-        }
-
-        // Downscaled Sobel Edge detection filter (highly optimized)
-        function applySobelFilter(ctx, width, height) {
-            sobelCanvas.width = 320;
-            sobelCanvas.height = 240;
-            sobelCtx.drawImage(ctx.canvas, 0, 0, 320, 240);
-            
-            const imgData = sobelCtx.getImageData(0, 0, 320, 240);
-            const data = imgData.data;
-            const output = sobelCtx.createImageData(320, 240);
-            const outData = output.data;
-            
-            const w = 320;
-            const h = 240;
-            
-            // Sobel operators
-            const kx = [
-                [-1, 0, 1],
-                [-2, 0, 2],
-                [-1, 0, 1]
-            ];
-            const ky = [
-                [-1, -2, -1],
-                [0, 0, 0],
-                [1, 2, 1]
-            ];
-            
-            for (let y = 1; y < h - 1; y++) {
-                for (let x = 1; x < w - 1; x++) {
-                    let pixelX = 0;
-                    let pixelY = 0;
-                    
-                    for (let kyIdx = 0; kyIdx < 3; kyIdx++) {
-                        for (let kxIdx = 0; kxIdx < 3; kxIdx++) {
-                            const py = y + kyIdx - 1;
-                            const px = x + kxIdx - 1;
-                            const idx = (py * w + px) * 4;
-                            const r = data[idx];
-                            const g = data[idx+1];
-                            const b = data[idx+2];
-                            const gray = 0.299 * r + 0.587 * g + 0.114 * b;
-                            
-                            pixelX += gray * kx[kyIdx][kxIdx];
-                            pixelY += gray * ky[kyIdx][kxIdx];
-                        }
-                    }
-                    
-                    const val = Math.sqrt(pixelX * pixelX + pixelY * pixelY);
-                    const destIdx = (y * w + x) * 4;
-                    
-                    if (val > 45) {
-                        outData[destIdx] = 16;       // Emerald Green Neon Edge
-                        outData[destIdx+1] = 185;
-                        outData[destIdx+2] = 129;
-                        outData[destIdx+3] = 255;
-                    } else {
-                        // Dim original background slightly
-                        outData[destIdx] = Math.round(data[destIdx] * 0.45);
-                        outData[destIdx+1] = Math.round(data[destIdx+1] * 0.45);
-                        outData[destIdx+2] = Math.round(data[destIdx+2] * 0.45);
-                        outData[destIdx+3] = 255;
-                    }
-                }
-            }
-            
-            sobelCtx.putImageData(output, 0, 0);
-            
-            // Draw smaller Sobel canvas back stretched to 640x480 (adds nice retro edge look)
-            ctx.drawImage(sobelCanvas, 0, 0, width, height);
-        }
-
-        // Draw overlays on top of the final frame
-        function applyCanvasFilters(ctx, mode) {
-            const w = ctx.canvas.width;
-            const h = ctx.canvas.height;
-            
-            if (mode === "THUMBS_UP") {
-                applySobelFilter(ctx, w, h);
-                
-                // Draw text "Mantap!"
-                const elapsed = (Date.now() - thumbsAnimStart) / 1000;
-                let size = 50;
-                if (elapsed < 0.4) {
-                    size = 20 + (50 - 20) * (elapsed / 0.4);
-                }
-                drawTextCentered(ctx, "Mantap!", size, "#00FFC8", "#000000");
-            }
-            else if (mode === "FIST") {
-                // Red overlay filter
-                ctx.fillStyle = "rgba(180, 0, 0, 0.3)";
-                ctx.fillRect(0, 0, w, h);
-                
-                // Draw text "Hidup Jokowi!!!" with bounce
-                const elapsed = (Date.now() - fistAnimStart) / 1000;
-                let size = 48;
-                if (elapsed < 0.15) {
-                    size = 15 + (55 - 15) * (elapsed / 0.15);
-                } else if (elapsed < 0.3) {
-                    size = 55 - 7 * ((elapsed - 0.15) / 0.15);
-                }
-                drawTextCentered(ctx, "Hidup Jokowi!!!", size, "#FF0000", "#FFFFFF");
-            }
-        }
-
-        // Typewriter subtitle overlay manager
-        function startTypewriter() {
-            const text = "Foto kita blur";
-            textOverlay.innerText = "";
-            textOverlay.classList.add('active');
-            
-            let index = 0;
-            if (typewriterInterval) clearInterval(typewriterInterval);
-            
-            typewriterInterval = setInterval(() => {
-                if (index < text.length) {
-                    textOverlay.innerText += text[index];
-                    index++;
-                } else {
-                    clearInterval(typewriterInterval);
-                    typewriterInterval = null;
-                }
-            }, 150);
-        }
-
-        function stopTypewriter() {
-            if (typewriterInterval) {
-                clearInterval(typewriterInterval);
-                typewriterInterval = null;
-            }
-            textOverlay.classList.remove('active');
-            textOverlay.innerText = "";
-        }
-
-        // Canvas Sparkles Particles System
-        const particleCanvas = document.createElement('canvas');
-        particleCanvas.style.position = 'absolute';
-        particleCanvas.style.inset = '0';
-        particleCanvas.style.width = '100%';
-        particleCanvas.style.height = '100%';
-        particleCanvas.style.pointerEvents = 'none';
-        particleCanvas.style.zIndex = '7';
-        cameraWrapper.appendChild(particleCanvas);
-        
-        const ctx2d = particleCanvas.getContext('2d');
-        let particles = [];
-        let particleAnimationId = null;
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * particleCanvas.width;
-                this.y = particleCanvas.height + 10;
-                this.size = Math.random() * 4 + 2;
-                this.speedY = -(Math.random() * 2.5 + 1.2);
-                this.speedX = (Math.random() - 0.5) * 1.5;
-                this.alpha = 1;
-                this.color = '16, 185, 129';
-            }
-            update() {
-                this.y += this.speedY;
-                this.x += this.speedX;
-                this.alpha -= 0.015;
-            }
-            draw() {
-                ctx2d.save();
-                ctx2d.globalAlpha = this.alpha;
-                ctx2d.fillStyle = `rgb(${this.color})`;
-                ctx2d.shadowColor = `rgb(${this.color})`;
-                ctx2d.shadowBlur = 10;
-                ctx2d.beginPath();
-                ctx2d.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx2d.fill();
-                ctx2d.restore();
-            }
-        }
-
-        function handleParticles() {
-            ctx2d.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
-            
-            if (currentMode === "THUMBS_UP") {
-                if (particles.length < 40 && Math.random() < 0.4) {
-                    particles.push(new Particle());
-                }
-            }
-            
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-                if (particles[i].alpha <= 0) {
-                    particles.splice(i, 1);
-                    i--;
-                }
-            }
-            
-            if (particles.length > 0 || currentMode === "THUMBS_UP") {
-                particleAnimationId = requestAnimationFrame(handleParticles);
+            if (val > 45) {
+              outData[destIdx] = 16; // Emerald Green Neon Edge
+              outData[destIdx + 1] = 185;
+              outData[destIdx + 2] = 129;
+              outData[destIdx + 3] = 255;
             } else {
-                particleAnimationId = null;
+              // Dim original background slightly
+              outData[destIdx] = Math.round(data[destIdx] * 0.45);
+              outData[destIdx + 1] = Math.round(data[destIdx + 1] * 0.45);
+              outData[destIdx + 2] = Math.round(data[destIdx + 2] * 0.45);
+              outData[destIdx + 3] = 255;
             }
+          }
         }
 
-        function resizeParticleCanvas() {
-            particleCanvas.width = cameraWrapper.clientWidth;
-            particleCanvas.height = cameraWrapper.clientHeight;
+        sobelCtx.putImageData(output, 0, 0);
+
+        // Draw smaller Sobel canvas back stretched to 640x480 (adds nice retro edge look)
+        ctx.drawImage(sobelCanvas, 0, 0, width, height);
+      }
+
+      // Draw overlays on top of the final frame
+      function applyCanvasFilters(ctx, mode) {
+        const w = ctx.canvas.width;
+        const h = ctx.canvas.height;
+
+        if (mode === "THUMBS_UP") {
+          applySobelFilter(ctx, w, h);
+
+          // Draw text "Mantap!"
+          const elapsed = (Date.now() - thumbsAnimStart) / 1000;
+          let size = 50;
+          if (elapsed < 0.4) {
+            size = 20 + (50 - 20) * (elapsed / 0.4);
+          }
+          drawTextCentered(ctx, "Mantap!", size, "#00FFC8", "#000000");
+        } else if (mode === "FIST") {
+          // Red overlay filter
+          ctx.fillStyle = "rgba(180, 0, 0, 0.3)";
+          ctx.fillRect(0, 0, w, h);
+
+          // Draw text "Hidup Jokowi!!!" with bounce
+          const elapsed = (Date.now() - fistAnimStart) / 1000;
+          let size = 48;
+          if (elapsed < 0.15) {
+            size = 15 + (55 - 15) * (elapsed / 0.15);
+          } else if (elapsed < 0.3) {
+            size = 55 - 7 * ((elapsed - 0.15) / 0.15);
+          }
+          drawTextCentered(ctx, "Hidup Jokowi!!!", size, "#FF0000", "#FFFFFF");
+        }
+      }
+
+      // Typewriter subtitle overlay manager
+      function startTypewriter() {
+        const text = "Foto kita blur";
+        textOverlay.innerText = "";
+        textOverlay.classList.add("active");
+
+        let index = 0;
+        if (typewriterInterval) clearInterval(typewriterInterval);
+
+        typewriterInterval = setInterval(() => {
+          if (index < text.length) {
+            textOverlay.innerText += text[index];
+            index++;
+          } else {
+            clearInterval(typewriterInterval);
+            typewriterInterval = null;
+          }
+        }, 150);
+      }
+
+      function stopTypewriter() {
+        if (typewriterInterval) {
+          clearInterval(typewriterInterval);
+          typewriterInterval = null;
+        }
+        textOverlay.classList.remove("active");
+        textOverlay.innerText = "";
+      }
+
+      // Canvas Sparkles Particles System
+      const particleCanvas = document.createElement("canvas");
+      particleCanvas.style.position = "absolute";
+      particleCanvas.style.inset = "0";
+      particleCanvas.style.width = "100%";
+      particleCanvas.style.height = "100%";
+      particleCanvas.style.pointerEvents = "none";
+      particleCanvas.style.zIndex = "7";
+      cameraWrapper.appendChild(particleCanvas);
+
+      const ctx2d = particleCanvas.getContext("2d");
+      let particles = [];
+      let particleAnimationId = null;
+
+      class Particle {
+        constructor() {
+          this.x = Math.random() * particleCanvas.width;
+          this.y = particleCanvas.height + 10;
+          this.size = Math.random() * 4 + 2;
+          this.speedY = -(Math.random() * 2.5 + 1.2);
+          this.speedX = (Math.random() - 0.5) * 1.5;
+          this.alpha = 1;
+          this.color = "16, 185, 129";
+        }
+        update() {
+          this.y += this.speedY;
+          this.x += this.speedX;
+          this.alpha -= 0.015;
+        }
+        draw() {
+          ctx2d.save();
+          ctx2d.globalAlpha = this.alpha;
+          ctx2d.fillStyle = `rgb(${this.color})`;
+          ctx2d.shadowColor = `rgb(${this.color})`;
+          ctx2d.shadowBlur = 10;
+          ctx2d.beginPath();
+          ctx2d.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx2d.fill();
+          ctx2d.restore();
+        }
+      }
+
+      function handleParticles() {
+        ctx2d.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+
+        if (currentMode === "THUMBS_UP") {
+          if (particles.length < 40 && Math.random() < 0.4) {
+            particles.push(new Particle());
+          }
         }
 
-        function triggerParticles() {
-            resizeParticleCanvas();
-            if (!particleAnimationId) {
-                handleParticles();
+        for (let i = 0; i < particles.length; i++) {
+          particles[i].update();
+          particles[i].draw();
+          if (particles[i].alpha <= 0) {
+            particles.splice(i, 1);
+            i--;
+          }
+        }
+
+        if (particles.length > 0 || currentMode === "THUMBS_UP") {
+          particleAnimationId = requestAnimationFrame(handleParticles);
+        } else {
+          particleAnimationId = null;
+        }
+      }
+
+      function resizeParticleCanvas() {
+        particleCanvas.width = cameraWrapper.clientWidth;
+        particleCanvas.height = cameraWrapper.clientHeight;
+      }
+
+      function triggerParticles() {
+        resizeParticleCanvas();
+        if (!particleAnimationId) {
+          handleParticles();
+        }
+      }
+
+      window.addEventListener("resize", resizeParticleCanvas);
+
+      // Hardware Battery Status API
+      if (navigator.getBattery) {
+        navigator.getBattery().then((battery) => {
+          function updateBatteryInfo() {
+            const level = Math.round(battery.level * 100);
+            document.getElementById("hud-battery-percent").innerText =
+              `${level}%`;
+            const icon = document.getElementById("hud-battery-icon");
+
+            icon.className = "fa-solid ";
+            if (battery.charging) {
+              icon.className += "fa-battery-bolt";
+              icon.style.color = "#10B981";
+            } else {
+              icon.style.color = "";
+              if (level > 80) icon.className += "fa-battery-full";
+              else if (level > 55)
+                icon.className += "fa-battery-three-quarters";
+              else if (level > 30) icon.className += "fa-battery-half";
+              else if (level > 15) icon.className += "fa-battery-quarter";
+              else {
+                icon.className += "fa-battery-empty";
+                icon.style.color = "#EF4444";
+              }
             }
+          }
+          updateBatteryInfo();
+          battery.addEventListener("levelchange", updateBatteryInfo);
+          battery.addEventListener("chargingchange", updateBatteryInfo);
+        });
+      }
+
+      // HUD Elapsed Time counter
+      function startHUDTimer() {
+        streamStartTime = Date.now();
+        timerInterval = setInterval(() => {
+          const elapsed = Date.now() - streamStartTime;
+          const secs = Math.floor(elapsed / 1000) % 60;
+          const mins = Math.floor(elapsed / 60000) % 60;
+          const hrs = Math.floor(elapsed / 3600000);
+
+          document.getElementById("hud-timer").innerText =
+            `${hrs.toString().padStart(2, "0")}:${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+        }, 1000);
+      }
+
+      function stopHUDTimer() {
+        if (timerInterval) {
+          clearInterval(timerInterval);
+          timerInterval = null;
         }
+        document.getElementById("hud-timer").innerText = "00:00:00";
+      }
 
-        window.addEventListener('resize', resizeParticleCanvas);
+      // Utility to write logs
+      function addLog(text, type = "info") {
+        const timeStr = new Date().toTimeString().split(" ")[0];
+        const logEntry = document.createElement("div");
+        logEntry.className = "log-entry";
 
-        // Hardware Battery Status API
-        if (navigator.getBattery) {
-            navigator.getBattery().then(battery => {
-                function updateBatteryInfo() {
-                    const level = Math.round(battery.level * 100);
-                    document.getElementById('hud-battery-percent').innerText = `${level}%`;
-                    const icon = document.getElementById('hud-battery-icon');
-                    
-                    icon.className = 'fa-solid ';
-                    if (battery.charging) {
-                        icon.className += 'fa-battery-bolt';
-                        icon.style.color = '#10B981';
-                    } else {
-                        icon.style.color = '';
-                        if (level > 80) icon.className += 'fa-battery-full';
-                        else if (level > 55) icon.className += 'fa-battery-three-quarters';
-                        else if (level > 30) icon.className += 'fa-battery-half';
-                        else if (level > 15) icon.className += 'fa-battery-quarter';
-                        else {
-                            icon.className += 'fa-battery-empty';
-                            icon.style.color = '#EF4444';
-                        }
-                    }
-                }
-                updateBatteryInfo();
-                battery.addEventListener('levelchange', updateBatteryInfo);
-                battery.addEventListener('chargingchange', updateBatteryInfo);
-            });
-        }
+        let typeClass = "log-info";
+        if (type === "success") typeClass = "log-success";
+        if (type === "warning") typeClass = "log-warning";
+        if (type === "danger") typeClass = "log-danger";
 
-        // HUD Elapsed Time counter
-        function startHUDTimer() {
-            streamStartTime = Date.now();
-            timerInterval = setInterval(() => {
-                const elapsed = Date.now() - streamStartTime;
-                const secs = Math.floor(elapsed / 1000) % 60;
-                const mins = Math.floor(elapsed / 60000) % 60;
-                const hrs = Math.floor(elapsed / 3600000);
-                
-                document.getElementById('hud-timer').innerText = 
-                    `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-            }, 1000);
-        }
-
-        function stopHUDTimer() {
-            if (timerInterval) {
-                clearInterval(timerInterval);
-                timerInterval = null;
-            }
-            document.getElementById('hud-timer').innerText = "00:00:00";
-        }
-
-        // Utility to write logs
-        function addLog(text, type = "info") {
-            const timeStr = new Date().toTimeString().split(' ')[0];
-            const logEntry = document.createElement('div');
-            logEntry.className = 'log-entry';
-            
-            let typeClass = "log-info";
-            if (type === "success") typeClass = "log-success";
-            if (type === "warning") typeClass = "log-warning";
-            if (type === "danger") typeClass = "log-danger";
-            
-            logEntry.innerHTML = `
+        logEntry.innerHTML = `
                 <span class="log-time">[${timeStr}]</span>
                 <span class="log-text ${typeClass}">${text}</span>
             `;
-            
-            consoleLogsDiv.appendChild(logEntry);
-            consoleLogsDiv.scrollTop = consoleLogsDiv.scrollHeight;
+
+        consoleLogsDiv.appendChild(logEntry);
+        consoleLogsDiv.scrollTop = consoleLogsDiv.scrollHeight;
+      }
+
+      // Toggle Audio
+      audioToggle.addEventListener("change", (e) => {
+        audioEnabled = e.target.checked;
+        addLog(
+          `Audio browser ${audioEnabled ? "diaktifkan" : "dimatikan"}.`,
+          audioEnabled ? "info" : "warning",
+        );
+
+        if (audioEnabled) {
+          volumeIcon.className =
+            globalVolume > 0.5
+              ? "fa-solid fa-volume-high"
+              : "fa-solid fa-volume-low";
+        } else {
+          volumeIcon.className = "fa-solid fa-volume-xmark";
+          Object.values(audioTracks).forEach((t) => t.pause());
         }
 
-        // Toggle Audio
-        audioToggle.addEventListener('change', (e) => {
-            audioEnabled = e.target.checked;
-            addLog(`Audio browser ${audioEnabled ? 'diaktifkan' : 'dimatikan'}.`, audioEnabled ? "info" : "warning");
-            
-            if (audioEnabled) {
-                volumeIcon.className = globalVolume > 0.5 ? "fa-solid fa-volume-high" : "fa-solid fa-volume-low";
+        if (isRunning) {
+          syncAudioForMode(currentMode);
+        }
+      });
+
+      // Volume Slider Control
+      volumeSlider.addEventListener("input", (e) => {
+        globalVolume = e.target.value / 100;
+        Object.values(audioTracks).forEach((track) => {
+          track.volume = globalVolume;
+        });
+        if (audioEnabled) {
+          volumeIcon.className =
+            globalVolume > 0.5
+              ? "fa-solid fa-volume-high"
+              : "fa-solid fa-volume-low";
+        }
+      });
+
+      // Toggle Video Feed / Start App
+      startCamBtn.addEventListener("click", () => {
+        startApplication();
+      });
+
+      function startApplication() {
+        if (isRunning) return;
+
+        startCamBtn.disabled = true;
+        startCamBtn.innerText = "Memuat AI...";
+
+        initMediaPipe().then((success) => {
+          if (!success) {
+            startCamBtn.disabled = false;
+            startCamBtn.innerText = "Aktifkan Kamera";
+            return;
+          }
+
+          addLog("Meminta akses ke kamera perangkat...", "info");
+
+          navigator.mediaDevices
+            .getUserMedia({
+              video: {
+                width: { ideal: 640 },
+                height: { ideal: 480 },
+                facingMode: "user",
+              },
+              audio: false,
+            })
+            .then((stream) => {
+              webcamInput.srcObject = stream;
+              webcamInput.play();
+
+              // Show canvas
+              videoCanvas.style.display = "block";
+
+              // Fade out placeholder screen
+              cameraPlaceholder.style.opacity = "0";
+              setTimeout(() => {
+                cameraPlaceholder.style.display = "none";
+              }, 500);
+
+              isRunning = true;
+              statusText.innerText = "Kamera Aktif";
+              statusDot.classList.add("pulsing");
+              consolePulseStatus.innerText = "● ONLINE";
+              consolePulseStatus.style.color = "#10B981";
+              cameraAura.classList.add("active");
+
+              // Fade-in HUD overlay elements
+              hudElements.forEach((el) => el.classList.add("visible"));
+              scanlinesOverlay.classList.add("active");
+
+              addLog(
+                "Kamera terhubung! Memulai pemrosesan gesture...",
+                "success",
+              );
+
+              // Start capture and send loop
+              requestAnimationFrame(processFrameLoop);
+
+              // Start clock
+              startHUDTimer();
+            })
+            .catch((err) => {
+              addLog("Gagal mengakses kamera: " + err.message, "danger");
+              startCamBtn.disabled = false;
+              startCamBtn.innerText = "Aktifkan Kamera";
+              alert(
+                "Akses kamera ditolak atau tidak tersedia. Jika menggunakan Ngrok/HP, pastikan Anda menggunakan tautan HTTPS!",
+              );
+            });
+        });
+      }
+
+      let lastVideoTime = -1;
+
+      // Loop capturing frames from camera and sending to Flask
+      function processFrameLoop(timestamp) {
+        if (!isRunning) return;
+
+        if (webcamInput.readyState === webcamInput.HAVE_ENOUGH_DATA) {
+          // Ensure canvas size is locked
+          videoCanvas.width = 640;
+          videoCanvas.height = 480;
+          const ctx = videoCanvas.getContext("2d");
+
+          // Crop center to prevent squishing (gepeng) on portrait cameras (like mobile phones)
+          const videoWidth = webcamInput.videoWidth;
+          const videoHeight = webcamInput.videoHeight;
+          const videoRatio = videoWidth / videoHeight;
+          const canvasRatio = videoCanvas.width / videoCanvas.height;
+
+          let sx = 0,
+            sy = 0,
+            sWidth = videoWidth,
+            sHeight = videoHeight;
+          if (videoRatio > canvasRatio) {
+            sWidth = videoHeight * canvasRatio;
+            sx = (videoWidth - sWidth) / 2;
+          } else {
+            sHeight = videoWidth / canvasRatio;
+            sy = (videoHeight - sHeight) / 2;
+          }
+
+          // Mirror image horizontally for webcam standard look
+          ctx.translate(videoCanvas.width, 0);
+          ctx.scale(-1, 1);
+
+          // Draw webcam stream to visible canvas
+          ctx.drawImage(
+            webcamInput,
+            sx,
+            sy,
+            sWidth,
+            sHeight,
+            0,
+            0,
+            videoCanvas.width,
+            videoCanvas.height,
+          );
+
+          // Restore transform matrix
+          ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+          let detectedMode = "NORMAL";
+          const startProcessTime = performance.now();
+
+          if (webcamInput.currentTime !== lastVideoTime) {
+            lastVideoTime = webcamInput.currentTime;
+
+            // Detect hand landmarks
+            const detectionResults = handLandmarker.detectForVideo(
+              webcamInput,
+              timestamp,
+            );
+
+            if (
+              detectionResults.landmarks &&
+              detectionResults.landmarks.length > 0
+            ) {
+              const landmarks = detectionResults.landmarks[0];
+
+              detectedMode = gestureDetector.detect(landmarks);
+
+              // Draw yellow skeleton joints if normal mode
+              if (detectedMode === "NORMAL") {
+                drawLandmarks(ctx, landmarks);
+              }
             } else {
-                volumeIcon.className = "fa-solid fa-volume-xmark";
-                Object.values(audioTracks).forEach(t => t.pause());
+              // Debounce transition back to normal if hand leaves screen
+              detectedMode = gestureDetector.debounce("NORMAL");
             }
-            
-            if (isRunning) {
-                syncAudioForMode(currentMode);
+          } else {
+            detectedMode = currentMode;
+          }
+
+          const latency = Math.round(performance.now() - startProcessTime);
+          document.getElementById("hud-resolution").innerText =
+            `DEV CAM | LAT: ${latency}ms | 640x480`;
+
+          // Apply filters based on currentMode (we transition state in JS)
+          if (detectedMode !== currentMode) {
+            handleModeTransition(currentMode, detectedMode);
+            currentMode = detectedMode;
+          }
+
+          // Render filter overlays on canvas
+          applyCanvasFilters(ctx, currentMode);
+        }
+
+        requestAnimationFrame(processFrameLoop);
+      }
+
+      function syncAudioForMode(mode) {
+        if (!audioEnabled || !isRunning) {
+          Object.values(audioTracks).forEach((t) => t.pause());
+          return;
+        }
+
+        const config = modeConfigs[mode];
+        const targetSoundKey = config ? config.sound : null;
+
+        // Pause non-matching tracks
+        Object.entries(audioTracks).forEach(([key, track]) => {
+          if (key !== targetSoundKey) {
+            if (!track.paused) {
+              track.pause();
+              track.currentTime = 0; // reset
             }
+          }
         });
 
-        // Volume Slider Control
-        volumeSlider.addEventListener('input', (e) => {
-            globalVolume = e.target.value / 100;
-            Object.values(audioTracks).forEach(track => {
-                track.volume = globalVolume;
+        // Play target track
+        if (targetSoundKey) {
+          const targetTrack = audioTracks[targetSoundKey];
+          if (targetTrack.paused) {
+            targetTrack.play().catch((e) => {
+              console.log(
+                "Autoplay blocked by browser. Interaction required.",
+                e,
+              );
             });
-            if (audioEnabled) {
-                volumeIcon.className = globalVolume > 0.5 ? "fa-solid fa-volume-high" : "fa-solid fa-volume-low";
-            }
-        });
+          }
+        }
+      }
 
-        // Toggle Video Feed / Start App
-        startCamBtn.addEventListener('click', () => {
-            startApplication();
-        });
+      // Handle Visual & Audio changes when mode changes
+      function handleModeTransition(oldMode, newMode) {
+        const config = modeConfigs[newMode];
+        if (!config) return;
 
-        function startApplication() {
-            if (isRunning) return;
-            
-            startCamBtn.disabled = true;
-            startCamBtn.innerText = "Memuat AI...";
-            
-            initMediaPipe().then(success => {
-                if (!success) {
-                    startCamBtn.disabled = false;
-                    startCamBtn.innerText = "Aktifkan Kamera";
-                    return;
-                }
-                
-                addLog("Meminta akses ke kamera perangkat...", "info");
-                
-                navigator.mediaDevices.getUserMedia({
-                    video: {
-                        width: { ideal: 640 },
-                        height: { ideal: 480 },
-                        facingMode: "user"
-                    },
-                    audio: false
-                })
-                .then(stream => {
-                    webcamInput.srcObject = stream;
-                    webcamInput.play();
-                    
-                    // Show canvas
-                    videoCanvas.style.display = "block";
-                    
-                    // Fade out placeholder screen
-                    cameraPlaceholder.style.opacity = "0";
-                    setTimeout(() => {
-                        cameraPlaceholder.style.display = "none";
-                    }, 500);
-                    
-                    isRunning = true;
-                    statusText.innerText = "Kamera Aktif";
-                    statusDot.classList.add('pulsing');
-                    consolePulseStatus.innerText = "● ONLINE";
-                    consolePulseStatus.style.color = "#10B981";
-                    cameraAura.classList.add('active');
-                    
-                    // Fade-in HUD overlay elements
-                    hudElements.forEach(el => el.classList.add('visible'));
-                    scanlinesOverlay.classList.add('active');
-                    
-                    addLog("Kamera terhubung! Memulai pemrosesan gesture...", "success");
-                    
-                    // Start capture and send loop
-                    requestAnimationFrame(processFrameLoop);
-                    
-                    // Start clock
-                    startHUDTimer();
-                })
-                .catch(err => {
-                    addLog("Gagal mengakses kamera: " + err.message, "danger");
-                    startCamBtn.disabled = false;
-                    startCamBtn.innerText = "Aktifkan Kamera";
-                    alert("Akses kamera ditolak atau tidak tersedia. Jika menggunakan Ngrok/HP, pastikan Anda menggunakan tautan HTTPS!");
-                });
-            });
+        // Update CSS theme variables dynamically
+        document.documentElement.style.setProperty(
+          "--accent-color",
+          config.color,
+        );
+        document.documentElement.style.setProperty(
+          "--accent-glow",
+          config.glow,
+        );
+
+        // Update logs
+        let logType = "info";
+        if (newMode === "V_SIGN") logType = "warning";
+        if (newMode === "THUMBS_UP") logType = "success";
+        if (newMode === "FIST") logType = "danger";
+        addLog(`Gesture berubah: ${config.badge} terdeteksi.`, logType);
+
+        // Update UI elements
+        activeGestureBadge.innerText = config.badge;
+        activeGestureBadge.style.backgroundColor = `rgba(${hexToRgb(config.color)}, 0.15)`;
+        activeGestureBadge.style.borderColor = `rgba(${hexToRgb(config.color)}, 0.35)`;
+        activeGestureBadge.style.color = config.color;
+
+        activeGestureTitle.innerHTML = `<i class="${config.icon}"></i> ${config.name}`;
+        activeGestureTitle.style.color = config.color;
+
+        activeGestureDesc.innerText = config.desc;
+        activeTrackName.innerText = config.soundName || "None";
+        activeTrackName.style.color = config.color;
+
+        // Morph Gesture Display Box outline glow
+        gestureDisplayBox.style.boxShadow = `inset 0 0 20px ${config.glow}`;
+        gestureDisplayBox.style.borderColor = config.color;
+
+        // --- REACTIVE CAMERA FRAME WRAPPER HUD EFFECTS ---
+
+        // 1. Morph Crosshair Reticle State
+        hudCrosshair.className = "hud-crosshair hud-element visible"; // Reset
+        if (newMode === "THUMBS_UP") {
+          hudCrosshair.classList.add("thumbs-active");
+        } else if (newMode === "FIST") {
+          hudCrosshair.classList.add("fist-active");
+        } else if (newMode === "V_SIGN") {
+          hudCrosshair.classList.add("cinematic");
         }
 
-        let lastVideoTime = -1;
+        // 2. V_SIGN (Peace Mode) - Cinematic widescreen letterbox & film grain
+        if (newMode === "V_SIGN") {
+          cinematicTop.classList.add("active");
+          cinematicBottom.classList.add("active");
+          filmGrainOverlay.classList.add("active");
 
-        // Loop capturing frames from camera and sending to Flask
-        function processFrameLoop(timestamp) {
-            if (!isRunning) return;
-            
-            if (webcamInput.readyState === webcamInput.HAVE_ENOUGH_DATA) {
-                // Ensure canvas size is locked
-                videoCanvas.width = 640;
-                videoCanvas.height = 480;
-                const ctx = videoCanvas.getContext('2d');
-                
-                // Crop center to prevent squishing (gepeng) on portrait cameras (like mobile phones)
-                const videoWidth = webcamInput.videoWidth;
-                const videoHeight = webcamInput.videoHeight;
-                const videoRatio = videoWidth / videoHeight;
-                const canvasRatio = videoCanvas.width / videoCanvas.height;
-                
-                let sx = 0, sy = 0, sWidth = videoWidth, sHeight = videoHeight;
-                if (videoRatio > canvasRatio) {
-                    sWidth = videoHeight * canvasRatio;
-                    sx = (videoWidth - sWidth) / 2;
-                } else {
-                    sHeight = videoWidth / canvasRatio;
-                    sy = (videoHeight - sHeight) / 2;
-                }
-                
-                // Mirror image horizontally for webcam standard look
-                ctx.translate(videoCanvas.width, 0);
-                ctx.scale(-1, 1);
-                
-                // Draw webcam stream to visible canvas
-                ctx.drawImage(webcamInput, sx, sy, sWidth, sHeight, 0, 0, videoCanvas.width, videoCanvas.height);
-                
-                // Restore transform matrix
-                ctx.setTransform(1, 0, 0, 1, 0, 0);
-                
-                let detectedMode = "NORMAL";
-                const startProcessTime = performance.now();
-                
-                if (webcamInput.currentTime !== lastVideoTime) {
-                    lastVideoTime = webcamInput.currentTime;
-                    
-                    // Detect hand landmarks
-                    const detectionResults = handLandmarker.detectForVideo(webcamInput, timestamp);
-                    
-                    if (detectionResults.landmarks && detectionResults.landmarks.length > 0) {
-                        const landmarks = detectionResults.landmarks[0];
-                        
-                        detectedMode = gestureDetector.detect(landmarks);
-                        
-                        // Draw yellow skeleton joints if normal mode
-                        if (detectedMode === "NORMAL") {
-                            drawLandmarks(ctx, landmarks);
-                        }
-                    } else {
-                        // Debounce transition back to normal if hand leaves screen
-                        detectedMode = gestureDetector.debounce("NORMAL");
-                    }
-                } else {
-                    detectedMode = currentMode;
-                }
-                
-                const latency = Math.round(performance.now() - startProcessTime);
-                document.getElementById('hud-resolution').innerText = `DEV CAM | LAT: ${latency}ms | 640x480`;
-                
-                // Apply filters based on currentMode (we transition state in JS)
-                if (detectedMode !== currentMode) {
-                    handleModeTransition(currentMode, detectedMode);
-                    currentMode = detectedMode;
-                }
-                
-                // Render filter overlays on canvas
-                applyCanvasFilters(ctx, currentMode);
+          // CSS GPU Blur
+          videoCanvas.style.filter = "blur(12px)";
+
+          // Start typewriter
+          startTypewriter();
+
+          // Dim HUD elements slightly for cinema style
+          hudElements.forEach((el) => {
+            if (el.id !== "hud-timer" && el.id !== "hud-footer") {
+              el.style.opacity = "0.15";
             }
-            
-            requestAnimationFrame(processFrameLoop);
+          });
+        } else {
+          if (oldMode === "V_SIGN") {
+            stopTypewriter();
+          }
+          cinematicTop.classList.remove("active");
+          cinematicBottom.classList.remove("active");
+          filmGrainOverlay.classList.remove("active");
+
+          // Clear CSS Blur
+          videoCanvas.style.filter = "";
+
+          // Restore HUD opacity
+          hudElements.forEach((el) => (el.style.opacity = ""));
         }
 
-        function syncAudioForMode(mode) {
-            if (!audioEnabled || !isRunning) {
-                Object.values(audioTracks).forEach(t => t.pause());
-                return;
-            }
-
-            const config = modeConfigs[mode];
-            const targetSoundKey = config ? config.sound : null;
-
-            // Pause non-matching tracks
-            Object.entries(audioTracks).forEach(([key, track]) => {
-                if (key !== targetSoundKey) {
-                    if (!track.paused) {
-                        track.pause();
-                        track.currentTime = 0; // reset
-                    }
-                }
-            });
-
-            // Play target track
-            if (targetSoundKey) {
-                const targetTrack = audioTracks[targetSoundKey];
-                if (targetTrack.paused) {
-                    targetTrack.play().catch(e => {
-                        console.log("Autoplay blocked by browser. Interaction required.", e);
-                    });
-                }
-            }
+        // 3. FIST (Jokowi Mode) - Glitch overlays & screen shaking
+        if (newMode === "FIST") {
+          fistAnimStart = Date.now();
+          fistVignette.classList.add("active");
+          glitchOverlay.classList.add("active");
+          cameraWrapper.className = "video-wrapper glow-active shake-effect";
+        } else {
+          fistVignette.classList.remove("active");
+          glitchOverlay.classList.remove("active");
+          cameraWrapper.className = "video-wrapper glow-active";
         }
 
-        // Handle Visual & Audio changes when mode changes
-        function handleModeTransition(oldMode, newMode) {
-            const config = modeConfigs[newMode];
-            if (!config) return;
-
-            // Update CSS theme variables dynamically
-            document.documentElement.style.setProperty('--accent-color', config.color);
-            document.documentElement.style.setProperty('--accent-glow', config.glow);
-
-            // Update logs
-            let logType = "info";
-            if (newMode === "V_SIGN") logType = "warning";
-            if (newMode === "THUMBS_UP") logType = "success";
-            if (newMode === "FIST") logType = "danger";
-            addLog(`Gesture berubah: ${config.badge} terdeteksi.`, logType);
-
-            // Update UI elements
-            activeGestureBadge.innerText = config.badge;
-            activeGestureBadge.style.backgroundColor = `rgba(${hexToRgb(config.color)}, 0.15)`;
-            activeGestureBadge.style.borderColor = `rgba(${hexToRgb(config.color)}, 0.35)`;
-            activeGestureBadge.style.color = config.color;
-
-            activeGestureTitle.innerHTML = `<i class="${config.icon}"></i> ${config.name}`;
-            activeGestureTitle.style.color = config.color;
-            
-            activeGestureDesc.innerText = config.desc;
-            activeTrackName.innerText = config.soundName || "None";
-            activeTrackName.style.color = config.color;
-
-            // Morph Gesture Display Box outline glow
-            gestureDisplayBox.style.boxShadow = `inset 0 0 20px ${config.glow}`;
-            gestureDisplayBox.style.borderColor = config.color;
-
-            // --- REACTIVE CAMERA FRAME WRAPPER HUD EFFECTS ---
-            
-            // 1. Morph Crosshair Reticle State
-            hudCrosshair.className = "hud-crosshair hud-element visible"; // Reset
-            if (newMode === "THUMBS_UP") {
-                hudCrosshair.classList.add('thumbs-active');
-            } else if (newMode === "FIST") {
-                hudCrosshair.classList.add('fist-active');
-            } else if (newMode === "V_SIGN") {
-                hudCrosshair.classList.add('cinematic');
-            }
-
-            // 2. V_SIGN (Peace Mode) - Cinematic widescreen letterbox & film grain
-            if (newMode === "V_SIGN") {
-                cinematicTop.classList.add('active');
-                cinematicBottom.classList.add('active');
-                filmGrainOverlay.classList.add('active');
-                
-                // CSS GPU Blur
-                videoCanvas.style.filter = "blur(12px)";
-                
-                // Start typewriter
-                startTypewriter();
-                
-                // Dim HUD elements slightly for cinema style
-                hudElements.forEach(el => {
-                    if (el.id !== 'hud-timer' && el.id !== 'hud-footer') {
-                        el.style.opacity = '0.15';
-                    }
-                });
-            } else {
-                if (oldMode === "V_SIGN") {
-                    stopTypewriter();
-                }
-                cinematicTop.classList.remove('active');
-                cinematicBottom.classList.remove('active');
-                filmGrainOverlay.classList.remove('active');
-                
-                // Clear CSS Blur
-                videoCanvas.style.filter = "";
-                
-                // Restore HUD opacity
-                hudElements.forEach(el => el.style.opacity = '');
-            }
-
-            // 3. FIST (Jokowi Mode) - Glitch overlays & screen shaking
-            if (newMode === "FIST") {
-                fistAnimStart = Date.now();
-                fistVignette.classList.add('active');
-                glitchOverlay.classList.add('active');
-                cameraWrapper.className = "video-wrapper glow-active shake-effect";
-            } else {
-                fistVignette.classList.remove('active');
-                glitchOverlay.classList.remove('active');
-                cameraWrapper.className = "video-wrapper glow-active";
-            }
-
-            // 4. THUMBS_UP (Mantap Mode) - Launch rising particles
-            if (newMode === "THUMBS_UP") {
-                thumbsAnimStart = Date.now();
-                triggerParticles();
-            }
-
-            // Sync audio
-            syncAudioForMode(newMode);
+        // 4. THUMBS_UP (Mantap Mode) - Launch rising particles
+        if (newMode === "THUMBS_UP") {
+          thumbsAnimStart = Date.now();
+          triggerParticles();
         }
 
-        // Hex to RGB helper
-        function hexToRgb(hex) {
-            if (hex.startsWith('var')) {
-                if (hex.includes('normal')) return "59, 130, 246";
-                if (hex.includes('vsign')) return "245, 158, 11";
-                if (hex.includes('thumbs')) return "16, 185, 129";
-                if (hex.includes('fist')) return "239, 68, 68";
-            }
-            return "255, 255, 255";
+        // Sync audio
+        syncAudioForMode(newMode);
+      }
+
+      // Hex to RGB helper
+      function hexToRgb(hex) {
+        if (hex.startsWith("var")) {
+          if (hex.includes("normal")) return "59, 130, 246";
+          if (hex.includes("vsign")) return "245, 158, 11";
+          if (hex.includes("thumbs")) return "16, 185, 129";
+          if (hex.includes("fist")) return "239, 68, 68";
         }
+        return "255, 255, 255";
+      }
     </script>
-</body>
+  </body>
 </html>
